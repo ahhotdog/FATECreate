@@ -7,11 +7,11 @@ const I18N = {
     // All translatable strings organized by key
     strings: {
         // === APP TITLE ===
-        appTitle: { en: 'Fate Create', 'zh-TW': '命運創造' },
+        appTitle: { en: 'Fate Create', 'zh-TW': 'Fate Create' },
         appSubtitle: { en: 'FATE Core Character Creator', 'zh-TW': 'FATE Core 角色創建器' },
 
         // === HOME PAGE ===
-        btnNew: { en: 'NEW', 'zh-TW': '新建' },
+        btnNew: { en: 'NEW', 'zh-TW': '創角' },
         btnLoad: { en: 'LOAD', 'zh-TW': '讀取' },
 
         // === MENU ===
