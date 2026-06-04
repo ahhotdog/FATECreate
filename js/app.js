@@ -213,7 +213,10 @@ function setupEventListeners() {
     document.getElementById('btn-edit-mode').addEventListener('click', toggleEditMode);
     
     // === INFO PAGE ===
-    document.getElementById('btn-close-info').addEventListener('click', () => goBack());
+    const btnCloseInfo = document.getElementById('btn-close-info');
+    if (btnCloseInfo) {
+        btnCloseInfo.addEventListener('click', () => goBack());
+    }
     
     // === LOAD PAGE ===
     document.getElementById('btn-back-load').addEventListener('click', () => {
