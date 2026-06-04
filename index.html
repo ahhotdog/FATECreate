@@ -1,366 +1,621 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Fate Create - FATE Core Character Creator</title>
-    
+
     <!-- CSS Files -->
-    <link rel="stylesheet" href="css/main.css">
-    <link rel="stylesheet" href="css/components.css">
-    <link rel="stylesheet" href="css/views.css">
-</head>
-<body>
+    <link rel="stylesheet" href="css/main.css" />
+    <link rel="stylesheet" href="css/components.css" />
+    <link rel="stylesheet" href="css/views.css" />
+    <script src="https://www.paypal.com/sdk/js?client-id=BAASThg6x-1dfEk3dwnPrnWHonI9jvvlLSVjaezewKqn_lCPsTt7s1bM1Hz2bcPunwGmBLszs-gzyjTKaY&components=hosted-buttons&disable-funding=venmo&currency=TWD"></script>
+  </head>
+  <body>
     <!-- Menu Button (Always Visible) -->
     <button id="menu-button" class="menu-button" aria-label="Open menu">
-        <img src="assets/images/logo.png" alt="Menu">
+      <img src="assets/images/logo.png" alt="Menu" />
     </button>
 
     <!-- Main App Container -->
     <div id="app-container">
+      <!-- HOME PAGE -->
+      <div id="view-home" class="spa-view">
+        <img src="assets/images/logo-original.png" alt="Fate Create Logo" />
+        <h1>Fate Create</h1>
+        <div class="button-group">
+          <button id="btn-new" class="ui-button" data-i18n="btnNew">NEW</button>
+          <button
+            id="btn-load"
+            class="ui-button ui-button-secondary"
+            data-i18n="btnLoad"
+          >
+            LOAD
+          </button>
+        </div>
+      </div>
 
-        <!-- HOME PAGE -->
-        <div id="view-home" class="spa-view">
-            <img src="assets/images/logo-original.png" alt="Fate Create Logo">
-            <h1>Fate Create</h1>
-            <div class="button-group">
-                <button id="btn-new" class="ui-button" data-i18n="btnNew">NEW</button>
-                <button id="btn-load" class="ui-button ui-button-secondary" data-i18n="btnLoad">LOAD</button>
-            </div>
+      <!-- QUICK SETUP DECISION PAGE -->
+      <div id="view-quick-setup" class="spa-view hidden">
+        <h2 data-i18n="quickSetupTitle">Quick Setup?</h2>
+        <p data-i18n="quickSetupDesc">
+          Would you like to be guided through character creation step-by-step,
+          or skip to the character sheet?
+        </p>
+        <div class="button-group">
+          <button
+            id="btn-start-quick"
+            class="ui-button"
+            data-i18n="btnQuickSetup"
+          >
+            Quick Setup
+          </button>
+          <button
+            id="btn-skip-setup"
+            class="ui-button ui-button-secondary"
+            data-i18n="btnSkipSetup"
+          >
+            Skip for Now
+          </button>
+        </div>
+      </div>
+
+      <!-- CONCEPT PAGE (High Concept Aspect) -->
+      <div id="view-concept" class="spa-view hidden aspect-page">
+        <h2 data-i18n="step1Title">Step 1: High Concept</h2>
+        <p class="help-text" data-i18n="step1Desc">
+          Your High Concept sums up what your character is about—who they are
+          and what they do.
+        </p>
+
+        <div class="input-group">
+          <label for="aspect-concept" data-i18n="highConceptLabel"
+            >High Concept Aspect</label
+          >
+          <input
+            type="text"
+            id="aspect-concept"
+            class="input-field"
+            data-i18n-placeholder="highConceptPlaceholder"
+            placeholder="e.g., Wizard Private Eye"
+          />
+          <span class="input-help" data-i18n="highConceptHelp"
+            >This is one of your character's aspects.</span
+          >
         </div>
 
-        <!-- QUICK SETUP DECISION PAGE -->
-        <div id="view-quick-setup" class="spa-view hidden">
-            <h2 data-i18n="quickSetupTitle">Quick Setup?</h2>
-            <p data-i18n="quickSetupDesc">Would you like to be guided through character creation step-by-step, or skip to the character sheet?</p>
-            <div class="button-group">
-                <button id="btn-start-quick" class="ui-button" data-i18n="btnQuickSetup">Quick Setup</button>
-                <button id="btn-skip-setup" class="ui-button ui-button-secondary" data-i18n="btnSkipSetup">Skip for Now</button>
-            </div>
+        <div class="aspect-examples">
+          <p class="help-text" data-i18n="examples">Examples:</p>
+          <ul id="highconcept-examples"></ul>
         </div>
 
-        <!-- CONCEPT PAGE (High Concept Aspect) -->
-        <div id="view-concept" class="spa-view hidden aspect-page">
-            <h2 data-i18n="step1Title">Step 1: High Concept</h2>
-            <p class="help-text" data-i18n="step1Desc">Your High Concept sums up what your character is about—who they are and what they do.</p>
-            
-            <div class="input-group">
-                <label for="aspect-concept" data-i18n="highConceptLabel">High Concept Aspect</label>
-                <input type="text" id="aspect-concept" class="input-field" data-i18n-placeholder="highConceptPlaceholder" placeholder="e.g., Wizard Private Eye">
-                <span class="input-help" data-i18n="highConceptHelp">This is one of your character's aspects.</span>
-            </div>
+        <div class="button-group">
+          <button
+            id="btn-back-concept"
+            class="ui-button ui-button-secondary ui-button-small"
+            data-i18n="btnBack"
+          >
+            Back
+          </button>
+          <button id="btn-next-concept" class="ui-button" data-i18n="btnNext">
+            Next
+          </button>
+        </div>
+      </div>
 
-            <div class="aspect-examples">
-                <p class="help-text" data-i18n="examples">Examples:</p>
-                <ul id="highconcept-examples"></ul>
-            </div>
+      <!-- TROUBLE PAGE -->
+      <div id="view-trouble" class="spa-view hidden aspect-page">
+        <h2 data-i18n="step2Title">Step 2: Trouble</h2>
+        <p class="help-text" data-i18n="step2Desc">
+          Your Trouble represents the things that complicate your character's
+          life.
+        </p>
 
-            <div class="button-group">
-                <button id="btn-back-concept" class="ui-button ui-button-secondary ui-button-small" data-i18n="btnBack">Back</button>
-                <button id="btn-next-concept" class="ui-button" data-i18n="btnNext">Next</button>
-            </div>
+        <div class="input-group">
+          <label for="aspect-trouble" data-i18n="troubleLabel"
+            >Trouble Aspect</label
+          >
+          <input
+            type="text"
+            id="aspect-trouble"
+            class="input-field"
+            data-i18n-placeholder="troublePlaceholder"
+            placeholder="e.g., Sucker for a Pretty Face"
+          />
+          <span class="input-help" data-i18n="troubleHelp"
+            >This aspect will create interesting complications.</span
+          >
         </div>
 
-        <!-- TROUBLE PAGE -->
-        <div id="view-trouble" class="spa-view hidden aspect-page">
-            <h2 data-i18n="step2Title">Step 2: Trouble</h2>
-            <p class="help-text" data-i18n="step2Desc">Your Trouble represents the things that complicate your character's life.</p>
-            
-            <div class="input-group">
-                <label for="aspect-trouble" data-i18n="troubleLabel">Trouble Aspect</label>
-                <input type="text" id="aspect-trouble" class="input-field" data-i18n-placeholder="troublePlaceholder" placeholder="e.g., Sucker for a Pretty Face">
-                <span class="input-help" data-i18n="troubleHelp">This aspect will create interesting complications.</span>
-            </div>
-
-            <div class="aspect-examples">
-                <p class="help-text" data-i18n="examples">Examples:</p>
-                <ul id="trouble-examples"></ul>
-            </div>
-
-            <div class="button-group">
-                <button id="btn-back-trouble" class="ui-button ui-button-secondary ui-button-small" data-i18n="btnBack">Back</button>
-                <button id="btn-next-trouble" class="ui-button" data-i18n="btnNext">Next</button>
-            </div>
+        <div class="aspect-examples">
+          <p class="help-text" data-i18n="examples">Examples:</p>
+          <ul id="trouble-examples"></ul>
         </div>
 
-        <!-- PHASE ONE PAGE -->
-        <div id="view-phase-1" class="spa-view hidden aspect-page">
-            <h2 data-i18n="step3Title">Step 3: Phase One</h2>
-            <p class="help-text" data-i18n="step3Desc">Describe an important adventure or event in your character's past.</p>
-            
-            <div class="input-group">
-                <label for="aspect-phase1" data-i18n="phase1Label">Phase One Aspect</label>
-                <input type="text" id="aspect-phase1" class="input-field" data-i18n-placeholder="phase1Placeholder" placeholder="e.g., I Owe the Mob a Favor">
-                <span class="input-help" data-i18n="phase1Help">This aspect represents a formative experience.</span>
-            </div>
+        <div class="button-group">
+          <button
+            id="btn-back-trouble"
+            class="ui-button ui-button-secondary ui-button-small"
+            data-i18n="btnBack"
+          >
+            Back
+          </button>
+          <button id="btn-next-trouble" class="ui-button" data-i18n="btnNext">
+            Next
+          </button>
+        </div>
+      </div>
 
-            <div class="aspect-examples">
-                <p class="help-text" data-i18n="examples">Examples:</p>
-                <ul id="phase-examples"></ul>
-            </div>
+      <!-- PHASE ONE PAGE -->
+      <div id="view-phase-1" class="spa-view hidden aspect-page">
+        <h2 data-i18n="step3Title">Step 3: Phase One</h2>
+        <p class="help-text" data-i18n="step3Desc">
+          Describe an important adventure or event in your character's past.
+        </p>
 
-            <div class="button-group">
-                <button id="btn-back-phase1" class="ui-button ui-button-secondary ui-button-small" data-i18n="btnBack">Back</button>
-                <button id="btn-next-phase1" class="ui-button" data-i18n="btnNext">Next</button>
-            </div>
+        <div class="input-group">
+          <label for="aspect-phase1" data-i18n="phase1Label"
+            >Phase One Aspect</label
+          >
+          <input
+            type="text"
+            id="aspect-phase1"
+            class="input-field"
+            data-i18n-placeholder="phase1Placeholder"
+            placeholder="e.g., I Owe the Mob a Favor"
+          />
+          <span class="input-help" data-i18n="phase1Help"
+            >This aspect represents a formative experience.</span
+          >
         </div>
 
-        <!-- PHASE TWO PAGE -->
-        <div id="view-phase-2" class="spa-view hidden aspect-page">
-            <h2 data-i18n="step4Title">Step 4: Phase Two</h2>
-            <p class="help-text" data-i18n="step4Desc">Describe how you crossed paths with another character.</p>
-            
-            <div class="input-group">
-                <label for="aspect-phase2" data-i18n="phase2Label">Phase Two Aspect</label>
-                <input type="text" id="aspect-phase2" class="input-field" data-i18n-placeholder="phase2Placeholder" placeholder="e.g., Saved by My Best Friend">
-                <span class="input-help" data-i18n="phase2Help">This aspect represents a connection to others.</span>
-            </div>
-
-            <div class="button-group">
-                <button id="btn-back-phase2" class="ui-button ui-button-secondary ui-button-small" data-i18n="btnBack">Back</button>
-                <button id="btn-next-phase2" class="ui-button" data-i18n="btnNext">Next</button>
-            </div>
+        <div class="aspect-examples">
+          <p class="help-text" data-i18n="examples">Examples:</p>
+          <ul id="phase-examples"></ul>
         </div>
 
-        <!-- PHASE THREE PAGE -->
-        <div id="view-phase-3" class="spa-view hidden aspect-page">
-            <h2 data-i18n="step5Title">Step 5: Phase Three</h2>
-            <p class="help-text" data-i18n="step5Desc">Describe another adventure involving other characters.</p>
-            
-            <div class="input-group">
-                <label for="aspect-phase3" data-i18n="phase3Label">Phase Three Aspect</label>
-                <input type="text" id="aspect-phase3" class="input-field" data-i18n-placeholder="phase3Placeholder" placeholder="e.g., Made an Enemy of the Guild">
-                <span class="input-help" data-i18n="phase3Help">This aspect represents another important connection.</span>
-            </div>
+        <div class="button-group">
+          <button
+            id="btn-back-phase1"
+            class="ui-button ui-button-secondary ui-button-small"
+            data-i18n="btnBack"
+          >
+            Back
+          </button>
+          <button id="btn-next-phase1" class="ui-button" data-i18n="btnNext">
+            Next
+          </button>
+        </div>
+      </div>
 
-            <div class="button-group">
-                <button id="btn-back-phase3" class="ui-button ui-button-secondary ui-button-small" data-i18n="btnBack">Back</button>
-                <button id="btn-next-phase3" class="ui-button" data-i18n="btnNext">Next</button>
-            </div>
+      <!-- PHASE TWO PAGE -->
+      <div id="view-phase-2" class="spa-view hidden aspect-page">
+        <h2 data-i18n="step4Title">Step 4: Phase Two</h2>
+        <p class="help-text" data-i18n="step4Desc">
+          Describe how you crossed paths with another character.
+        </p>
+
+        <div class="input-group">
+          <label for="aspect-phase2" data-i18n="phase2Label"
+            >Phase Two Aspect</label
+          >
+          <input
+            type="text"
+            id="aspect-phase2"
+            class="input-field"
+            data-i18n-placeholder="phase2Placeholder"
+            placeholder="e.g., Saved by My Best Friend"
+          />
+          <span class="input-help" data-i18n="phase2Help"
+            >This aspect represents a connection to others.</span
+          >
         </div>
 
-        <!-- SKILLS PAGE -->
-        <div id="view-skills" class="spa-view hidden">
-            <h2 data-i18n="step6Title">Step 6: Skills</h2>
-            
-            <div class="skill-pyramid-info">
-                <p><strong data-i18n="skillPyramidInfo">Skill Pyramid:</strong> <span data-i18n="skillPyramidDesc">Select 1 skill at +4, 2 at +3, 3 at +2, and 4 at +1.</span></p>
-            </div>
+        <div class="button-group">
+          <button
+            id="btn-back-phase2"
+            class="ui-button ui-button-secondary ui-button-small"
+            data-i18n="btnBack"
+          >
+            Back
+          </button>
+          <button id="btn-next-phase2" class="ui-button" data-i18n="btnNext">
+            Next
+          </button>
+        </div>
+      </div>
 
-            <div class="skill-pyramid" id="skill-pyramid">
-                <!-- Skill tiers will be generated by JavaScript -->
-            </div>
+      <!-- PHASE THREE PAGE -->
+      <div id="view-phase-3" class="spa-view hidden aspect-page">
+        <h2 data-i18n="step5Title">Step 5: Phase Three</h2>
+        <p class="help-text" data-i18n="step5Desc">
+          Describe another adventure involving other characters.
+        </p>
 
-            <div class="button-group">
-                <button id="btn-back-skills" class="ui-button ui-button-secondary ui-button-small" data-i18n="btnBack">Back</button>
-                <button id="btn-next-skills" class="ui-button" disabled data-i18n="btnNext">Next</button>
-            </div>
+        <div class="input-group">
+          <label for="aspect-phase3" data-i18n="phase3Label"
+            >Phase Three Aspect</label
+          >
+          <input
+            type="text"
+            id="aspect-phase3"
+            class="input-field"
+            data-i18n-placeholder="phase3Placeholder"
+            placeholder="e.g., Made an Enemy of the Guild"
+          />
+          <span class="input-help" data-i18n="phase3Help"
+            >This aspect represents another important connection.</span
+          >
         </div>
 
-        <!-- STUNTS PAGE -->
-        <div id="view-stunts" class="spa-view hidden">
-            <h2 data-i18n="step7Title">Step 7: Stunts</h2>
-            
-            <div class="refresh-display">
-                <h3 data-i18n="refreshTitle">Refresh</h3>
-                <div class="refresh-value" id="refresh-value">3</div>
-                <p class="refresh-help" data-i18n="refreshHelp">You start with 3 free stunts. Additional stunts reduce refresh by 1.</p>
-            </div>
+        <div class="button-group">
+          <button
+            id="btn-back-phase3"
+            class="ui-button ui-button-secondary ui-button-small"
+            data-i18n="btnBack"
+          >
+            Back
+          </button>
+          <button id="btn-next-phase3" class="ui-button" data-i18n="btnNext">
+            Next
+          </button>
+        </div>
+      </div>
 
-            <div class="stunts-container" id="stunts-container">
-                <!-- Stunt cards will be generated by JavaScript -->
-            </div>
+      <!-- SKILLS PAGE -->
+      <div id="view-skills" class="spa-view hidden">
+        <h2 data-i18n="step6Title">Step 6: Skills</h2>
 
-            <div class="button-group">
-                <button id="btn-add-stunt" class="ui-button ui-button-secondary ui-button-small" data-i18n="btnAddStunt">Add Stunt</button>
-            </div>
-
-            <div class="button-group">
-                <button id="btn-back-stunts" class="ui-button ui-button-secondary ui-button-small" data-i18n="btnBack">Back</button>
-                <button id="btn-finish-wizard" class="ui-button ui-button-success" data-i18n="btnFinish">Finish</button>
-            </div>
+        <div class="skill-pyramid-info">
+          <p>
+            <strong data-i18n="skillPyramidInfo">Skill Pyramid:</strong>
+            <span data-i18n="skillPyramidDesc"
+              >Select 1 skill at +4, 2 at +3, 3 at +2, and 4 at +1.</span
+            >
+          </p>
         </div>
 
-        <!-- CHARACTER SHEET PAGE -->
-        <div id="view-character-sheet" class="spa-view hidden">
-            <div class="character-header">
-                <input type="text" id="character-name" class="character-name-input" data-i18n-placeholder="characterNamePlaceholder" placeholder="Character Name">
-            </div>
-
-            <!-- Aspects Section -->
-            <div class="character-section">
-                <div class="aspects-grid" id="aspects-display">
-                    <!-- Aspects will be populated by JavaScript -->
-                </div>
-            </div>
-
-            <!-- Skills Section -->
-            <div class="character-section">
-                <h3 data-i18n="skillsTitle">Skills</h3>
-                <div class="skills-display" id="skills-display">
-                    <!-- Skills will be populated by JavaScript -->
-                </div>
-            </div>
-
-            <!-- Stunts Section -->
-            <div class="character-section">
-                <h3 data-i18n="stuntsTitle">Stunts</h3>
-                <div class="stunts-display" id="stunts-display">
-                    <!-- Stunts will be populated by JavaScript -->
-                </div>
-            </div>
-
-            <!-- Stress & Consequences -->
-            <div class="character-section">
-                <h3 data-i18n="stressTitle">Stress & Consequences</h3>
-                
-                <div class="stress-tracks">
-                    <div class="stress-track">
-                        <h4 data-i18n="physicalStress">Physical Stress</h4>
-                        <div class="stress-boxes" id="physical-stress">
-                            <!-- Stress boxes will be generated by JavaScript -->
-                        </div>
-                    </div>
-                    
-                    <div class="stress-track">
-                        <h4 data-i18n="mentalStress">Mental Stress</h4>
-                        <div class="stress-boxes" id="mental-stress">
-                            <!-- Stress boxes will be generated by JavaScript -->
-                        </div>
-                    </div>
-                </div>
-
-                <div class="consequences-display">
-                    <div class="consequence-slot">
-                        <h4 data-i18n="mildConsequence">Mild Consequence (2 shifts)</h4>
-                        <input type="text" id="consequence-mild" class="consequence-aspect" data-i18n-placeholder="consequencePlaceholder" placeholder="Consequence aspect...">
-                    </div>
-                    <div class="consequence-slot">
-                        <h4 data-i18n="moderateConsequence">Moderate Consequence (4 shifts)</h4>
-                        <input type="text" id="consequence-moderate" class="consequence-aspect" data-i18n-placeholder="consequencePlaceholder" placeholder="Consequence aspect...">
-                    </div>
-                    <div class="consequence-slot">
-                        <h4 data-i18n="severeConsequence">Severe Consequence (6 shifts)</h4>
-                        <input type="text" id="consequence-severe" class="consequence-aspect" data-i18n-placeholder="consequencePlaceholder" placeholder="Consequence aspect...">
-                    </div>
-                </div>
-            </div>
-
-            <!-- Notes Section -->
-            <div class="character-section">
-                <h3 data-i18n="notesTitle">Notes</h3>
-                <textarea id="character-notes" class="notes-area" data-i18n-placeholder="notesPlaceholder" placeholder="Additional notes about your character..."></textarea>
-            </div>
-
-            <!-- Refresh Display -->
-            <div class="character-section">
-                <div class="refresh-display">
-                    <h3 data-i18n="refreshTitle">Refresh</h3>
-                    <div class="refresh-value" id="sheet-refresh-value">3</div>
-                </div>
-            </div>
-
-            <div class="button-group">
-                <button id="btn-edit-mode" class="ui-button ui-button-edit" data-i18n="btnEdit">Edit</button>
-                <button id="btn-save-character" class="ui-button ui-button-success" data-i18n="btnSave">Save Character</button>
-                <button id="btn-new-from-sheet" class="ui-button ui-button-secondary ui-button-small" data-i18n="btnNewFromSheet">New Character</button>
-            </div>
+        <div class="skill-pyramid" id="skill-pyramid">
+          <!-- Skill tiers will be generated by JavaScript -->
         </div>
 
-        <!-- LOAD PAGE -->
-        <div id="view-load" class="spa-view hidden">
-            <h2 data-i18n="loadTitle">Load Character</h2>
-            <div class="character-list" id="character-list">
-                <!-- Character cards will be populated by JavaScript -->
-            </div>
-            <div class="button-group">
-                <button id="btn-back-load" class="ui-button ui-button-secondary" data-i18n="btnBackHome">Back to Home</button>
-            </div>
+        <div class="button-group">
+          <button
+            id="btn-back-skills"
+            class="ui-button ui-button-secondary ui-button-small"
+            data-i18n="btnBack"
+          >
+            Back
+          </button>
+          <button
+            id="btn-next-skills"
+            class="ui-button"
+            disabled
+            data-i18n="btnNext"
+          >
+            Next
+          </button>
+        </div>
+      </div>
+
+      <!-- STUNTS PAGE -->
+      <div id="view-stunts" class="spa-view hidden">
+        <h2 data-i18n="step7Title">Step 7: Stunts</h2>
+
+        <div class="refresh-display">
+          <h3 data-i18n="refreshTitle">Refresh</h3>
+          <div class="refresh-value" id="refresh-value">3</div>
+          <p class="refresh-help" data-i18n="refreshHelp">
+            You start with 3 free stunts. Additional stunts reduce refresh by 1.
+          </p>
         </div>
 
-        <!-- INFO PAGE -->
-        <div id="view-info" class="spa-view hidden">
-            <h2 data-i18n="infoTitle">About Fate Create</h2>
-            
-            <div class="info-section">
-                <h3 data-i18n="infoWhatTitle">What is FATE Core?</h3>
-                <p data-i18n="infoWhatDesc">FATE Core is a tabletop roleplaying game system that emphasizes collaborative storytelling and character-driven narratives. Characters are defined by their aspects, skills, and stunts.</p>
-            </div>
-
-            <div class="info-section">
-                <h3 data-i18n="infoHowTitle">How to Use This App</h3>
-                <p data-i18n="infoHowDesc">Click "NEW" to create a character. You can use Quick Setup for a guided experience, or skip to the character sheet to fill it out manually. Your characters are saved in your browser.</p>
-            </div>
-
-            <div class="info-section">
-                <h3 data-i18n="infoVersionTitle">Version</h3>
-                <p data-i18n="infoVersion">Fate Create v1.0</p>
-            </div>
-
-            <div class="button-group">
-                <button id="btn-close-info" class="ui-button" data-i18n="btnClose">Close</button>
-            </div>
+        <div class="stunts-container" id="stunts-container">
+          <!-- Stunt cards will be generated by JavaScript -->
         </div>
 
-        <!-- SETTINGS PAGE -->
-        <div id="view-settings" class="spa-view hidden">
-            <h2 data-i18n="settingsTitle">Settings</h2>
-            
-            <div class="settings-section">
-                <h3 data-i18n="languageTitle">Language</h3>
-                <div class="language-options">
-                    <button class="language-option" id="lang-en" data-lang="en">
-                        <span class="lang-flag">🇺🇸</span>
-                        <span class="lang-name">English</span>
-                    </button>
-                    <button class="language-option" id="lang-zh-TW" data-lang="zh-TW">
-                        <span class="lang-flag">🇹🇼</span>
-                        <span class="lang-name">繁體中文</span>
-                    </button>
-                </div>
-            </div>
-
-            <div class="button-group">
-                <button id="btn-back-settings" class="ui-button ui-button-secondary" data-i18n="btnBackHome">Back to Home</button>
-            </div>
+        <div class="button-group">
+          <button
+            id="btn-add-stunt"
+            class="ui-button ui-button-secondary ui-button-small"
+            data-i18n="btnAddStunt"
+          >
+            Add Stunt
+          </button>
         </div>
 
+        <div class="button-group">
+          <button
+            id="btn-back-stunts"
+            class="ui-button ui-button-secondary ui-button-small"
+            data-i18n="btnBack"
+          >
+            Back
+          </button>
+          <button
+            id="btn-finish-wizard"
+            class="ui-button ui-button-success"
+            data-i18n="btnFinish"
+          >
+            Finish
+          </button>
+        </div>
+      </div>
+
+      <!-- CHARACTER SHEET PAGE -->
+      <div id="view-character-sheet" class="spa-view hidden">
+        <div class="character-header">
+          <input
+            type="text"
+            id="character-name"
+            class="character-name-input"
+            data-i18n-placeholder="characterNamePlaceholder"
+            placeholder="Character Name"
+          />
+        </div>
+
+        <!-- Aspects Section -->
+        <div class="character-section">
+          <div class="aspects-grid" id="aspects-display">
+            <!-- Aspects will be populated by JavaScript -->
+          </div>
+        </div>
+
+        <!-- Skills Section -->
+        <div class="character-section">
+          <h3 data-i18n="skillsTitle">Skills</h3>
+          <div class="skills-display" id="skills-display">
+            <!-- Skills will be populated by JavaScript -->
+          </div>
+        </div>
+
+        <!-- Stunts Section -->
+        <div class="character-section">
+          <h3 data-i18n="stuntsTitle">Stunts</h3>
+          <div class="stunts-display" id="stunts-display">
+            <!-- Stunts will be populated by JavaScript -->
+          </div>
+        </div>
+
+        <!-- Stress & Consequences -->
+        <div class="character-section">
+          <h3 data-i18n="stressTitle">Stress & Consequences</h3>
+
+          <div class="stress-tracks">
+            <div class="stress-track">
+              <h4 data-i18n="physicalStress">Physical Stress</h4>
+              <div class="stress-boxes" id="physical-stress">
+                <!-- Stress boxes will be generated by JavaScript -->
+              </div>
+            </div>
+
+            <div class="stress-track">
+              <h4 data-i18n="mentalStress">Mental Stress</h4>
+              <div class="stress-boxes" id="mental-stress">
+                <!-- Stress boxes will be generated by JavaScript -->
+              </div>
+            </div>
+          </div>
+
+          <div class="consequences-display">
+            <div class="consequence-slot">
+              <h4 data-i18n="mildConsequence">Mild Consequence (2 shifts)</h4>
+              <input
+                type="text"
+                id="consequence-mild"
+                class="consequence-aspect"
+                data-i18n-placeholder="consequencePlaceholder"
+                placeholder="Consequence aspect..."
+              />
+            </div>
+            <div class="consequence-slot">
+              <h4 data-i18n="moderateConsequence">
+                Moderate Consequence (4 shifts)
+              </h4>
+              <input
+                type="text"
+                id="consequence-moderate"
+                class="consequence-aspect"
+                data-i18n-placeholder="consequencePlaceholder"
+                placeholder="Consequence aspect..."
+              />
+            </div>
+            <div class="consequence-slot">
+              <h4 data-i18n="severeConsequence">
+                Severe Consequence (6 shifts)
+              </h4>
+              <input
+                type="text"
+                id="consequence-severe"
+                class="consequence-aspect"
+                data-i18n-placeholder="consequencePlaceholder"
+                placeholder="Consequence aspect..."
+              />
+            </div>
+          </div>
+        </div>
+
+        <!-- Notes Section -->
+        <div class="character-section">
+          <h3 data-i18n="notesTitle">Notes</h3>
+          <textarea
+            id="character-notes"
+            class="notes-area"
+            data-i18n-placeholder="notesPlaceholder"
+            placeholder="Additional notes about your character..."
+          ></textarea>
+        </div>
+
+        <!-- Refresh Display -->
+        <div class="character-section">
+          <div class="refresh-display">
+            <h3 data-i18n="refreshTitle">Refresh</h3>
+            <div class="refresh-value" id="sheet-refresh-value">3</div>
+          </div>
+        </div>
+
+        <div class="button-group">
+          <button
+            id="btn-edit-mode"
+            class="ui-button ui-button-edit"
+            data-i18n="btnEdit"
+          >
+            Edit
+          </button>
+          <button
+            id="btn-save-character"
+            class="ui-button ui-button-success"
+            data-i18n="btnSave"
+          >
+            Save Character
+          </button>
+          <button
+            id="btn-new-from-sheet"
+            class="ui-button ui-button-secondary ui-button-small"
+            data-i18n="btnNewFromSheet"
+          >
+            New Character
+          </button>
+        </div>
+      </div>
+
+      <!-- LOAD PAGE -->
+      <div id="view-load" class="spa-view hidden">
+        <h2 data-i18n="loadTitle">Load Character</h2>
+        <div class="character-list" id="character-list">
+          <!-- Character cards will be populated by JavaScript -->
+        </div>
+        <div class="button-group">
+          <button
+            id="btn-back-load"
+            class="ui-button ui-button-secondary"
+            data-i18n="btnBackHome"
+          >
+            Back to Home
+          </button>
+        </div>
+      </div>
+
+      <!-- INFO PAGE -->
+      <div id="view-info" class="spa-view hidden">
+        <h2 data-i18n="infoTitle">About Fate Create</h2>
+
+        <div class="info-section">
+          <h3 data-i18n="infoWhatTitle">What is FATE Core?</h3>
+          <p data-i18n="infoWhatDesc">
+            FATE Core is a tabletop roleplaying game system that emphasizes
+            collaborative storytelling and character-driven narratives.
+            Characters are defined by their aspects, skills, and stunts.
+          </p>
+        </div>
+
+        <div class="info-section">
+          <h3 data-i18n="infoHowTitle">How to Use This App</h3>
+          <p data-i18n="infoHowDesc">
+            Click "NEW" to create a character. You can use Quick Setup for a
+            guided experience, or skip to the character sheet to fill it out
+            manually. Your characters are saved in your browser.
+          </p>
+        </div>
+
+        <div class="info-section">
+          <h3 data-i18n="infoVersionTitle">Version</h3>
+          <p data-i18n="infoVersion">Fate Create v1.0</p>
+        </div>
+
+        <div class="button-group">
+          <button id="btn-close-info" class="ui-button" data-i18n="btnClose">
+            Close
+          </button>
+        </div>
+      </div>
+
+      <!-- SETTINGS PAGE -->
+      <div id="view-settings" class="spa-view hidden">
+        <h2 data-i18n="settingsTitle">Settings</h2>
+
+        <div class="settings-section">
+          <h3 data-i18n="languageTitle">Language</h3>
+          <div class="language-options">
+            <button class="language-option" id="lang-en" data-lang="en">
+              <span class="lang-flag">🇺🇸</span>
+              <span class="lang-name">English</span>
+            </button>
+            <button class="language-option" id="lang-zh-TW" data-lang="zh-TW">
+              <span class="lang-flag">🇹🇼</span>
+              <span class="lang-name">繁體中文</span>
+            </button>
+            <div id="paypal-container-H5FATGBWSULTA"></div>
+            <script>
+              paypal
+                .HostedButtons({
+                  hostedButtonId: "H5FATGBWSULTA",
+                })
+                .render("#paypal-container-H5FATGBWSULTA");
+            </script>
+          </div>
+        </div>
+
+        <div class="button-group">
+          <button
+            id="btn-back-settings"
+            class="ui-button ui-button-secondary"
+            data-i18n="btnBackHome"
+          >
+            Back to Home
+          </button>
+        </div>
+      </div>
     </div>
 
     <!-- MENU OVERLAY -->
     <div id="menu-overlay" class="overlay hidden">
-        <div class="menu-content">
-            <button id="menu-logo-close" class="menu-logo" aria-label="Close menu">
-                <img class="menu-buttonwhite" src="assets/images/LOGOwhite.png" alt="Fate Create">
-            </button>
-            <nav class="menu-nav">
-                <button class="menu-item" id="menu-new" data-i18n="menuNew">NEW</button>
-                <button class="menu-item" id="menu-load" data-i18n="menuLoad">LOAD</button>
-                <button class="menu-item" id="menu-info" data-i18n="menuInfo">INFO</button>
-                <button class="menu-item" id="menu-setting" data-i18n="menuSetting">SETTING</button>
-            </nav>
-        </div>
+      <div class="menu-content">
+        <button id="menu-logo-close" class="menu-logo" aria-label="Close menu">
+          <img
+            class="menu-buttonwhite"
+            src="assets/images/LOGOwhite.png"
+            alt="Fate Create"
+          />
+        </button>
+        <nav class="menu-nav">
+          <button class="menu-item" id="menu-new" data-i18n="menuNew">
+            NEW
+          </button>
+          <button class="menu-item" id="menu-load" data-i18n="menuLoad">
+            LOAD
+          </button>
+          <button class="menu-item" id="menu-info" data-i18n="menuInfo">
+            INFO
+          </button>
+          <button class="menu-item" id="menu-setting" data-i18n="menuSetting">
+            SETTING
+          </button>
+        </nav>
+      </div>
     </div>
 
     <!-- DICE ROLLER MODAL -->
     <div id="dice-modal" class="dice-overlay hidden">
-        <div class="dice-modal-content">
-            <div class="dice-skill-header">
-                <span id="dice-skill-name">Skill</span>
-                <span id="dice-skill-bonus">+0</span>
-            </div>
-            <div class="dice-container" id="dice-container">
-                <div class="fate-die" id="die-1"></div>
-                <div class="fate-die" id="die-2"></div>
-                <div class="fate-die" id="die-3"></div>
-                <div class="fate-die" id="die-4"></div>
-            </div>
-            <div class="dice-result hidden" id="dice-result">
-                <span class="dice-result-label" data-i18n="diceTotal">Total</span>
-                <span class="dice-result-value" id="dice-result-value">0</span>
-            </div>
-            <button class="dice-close-btn" id="dice-close" data-i18n="diceClose">Close</button>
+      <div class="dice-modal-content">
+        <div class="dice-skill-header">
+          <span id="dice-skill-name">Skill</span>
+          <span id="dice-skill-bonus">+0</span>
         </div>
+        <div class="dice-container" id="dice-container">
+          <div class="fate-die" id="die-1"></div>
+          <div class="fate-die" id="die-2"></div>
+          <div class="fate-die" id="die-3"></div>
+          <div class="fate-die" id="die-4"></div>
+        </div>
+        <div class="dice-result hidden" id="dice-result">
+          <span class="dice-result-label" data-i18n="diceTotal">Total</span>
+          <span class="dice-result-value" id="dice-result-value">0</span>
+        </div>
+        <button class="dice-close-btn" id="dice-close" data-i18n="diceClose">
+          Close
+        </button>
+      </div>
     </div>
 
     <!-- JavaScript Files (Load in order) -->
@@ -371,5 +626,5 @@
     <script src="js/navigation.js"></script>
     <script src="js/validation.js"></script>
     <script src="js/app.js"></script>
-</body>
+  </body>
 </html>
