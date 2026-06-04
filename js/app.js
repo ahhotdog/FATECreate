@@ -327,7 +327,7 @@ function setupSkillsPage() {
     
     // Pre-populate: if character already has skills assigned, place them in tiers
     const char = getCharacter();
-    const assignedSkills = char.skills ? { ...char.skills } : {};
+    const assignedSkills = (char && char.skills) ? { ...char.skills } : {};
     
     // Place assigned skills into their tier zones
     Object.entries(assignedSkills).forEach(([skillName, rating]) => {
