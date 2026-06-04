@@ -1,0 +1,740 @@
+/* views.css - Page-specific styles */
+
+/* ===== HOME PAGE ===== */
+
+#view-home {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-xl);
+    min-height: 80vh;
+}
+
+#view-home img {
+    max-width: 150px;
+    margin-bottom: var(--spacing-lg);
+}
+
+/* ===== QUICK SETUP PAGE ===== */
+
+#view-quick-setup {
+    text-align: center;
+}
+
+#view-quick-setup h2 {
+    margin-bottom: var(--spacing-xl);
+}
+
+#view-quick-setup p {
+    font-size: 1.125rem;
+    color: var(--text-light);
+    margin-bottom: var(--spacing-xl);
+}
+
+/* ===== ASPECT PAGES ===== */
+
+.aspect-page {
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.aspect-page h2 {
+    text-align: center;
+    margin-bottom: var(--spacing-md);
+}
+
+.aspect-page .help-text {
+    text-align: center;
+    color: var(--text-light);
+    margin-bottom: var(--spacing-xl);
+    font-size: 1rem;
+}
+
+/* ===== SKILLS PAGE ===== */
+
+#view-skills {
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+.skill-pyramid {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-lg);
+    margin-bottom: var(--spacing-xl);
+}
+
+.skill-tier {
+    background-color: var(--card-bg);
+    border-radius: var(--radius-lg);
+    padding: var(--spacing-lg);
+}
+
+.skill-tier h3 {
+    color: var(--btn-blue);
+    margin-bottom: var(--spacing-md);
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+}
+
+/* .skill-tier-label is now defined in the Edit Mode section below */
+
+.skill-slots {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+}
+
+.skill-select {
+    width: 100%;
+    padding: 12px 16px;
+    font-size: 1rem;
+    border: 2px solid var(--border-color);
+    border-radius: var(--radius-md);
+    background-color: white;
+    color: var(--text-dark);
+    cursor: pointer;
+    transition: border-color var(--transition-fast);
+}
+
+.skill-select:focus {
+    outline: none;
+    border-color: var(--btn-blue);
+}
+
+.skill-select option {
+    padding: var(--spacing-sm);
+}
+
+.skill-pyramid-info {
+    background-color: white;
+    border-left: 4px solid var(--btn-blue);
+    padding: var(--spacing-md);
+    margin-bottom: var(--spacing-lg);
+    border-radius: var(--radius-sm);
+}
+
+.skill-pyramid-info p {
+    margin: 0;
+    color: var(--text-light);
+}
+
+/* Wizard tile-based skill selection */
+.wizard-tier-zone {
+    background-color: var(--card-bg);
+    border-radius: var(--radius-lg);
+    padding: var(--spacing-md);
+}
+
+.wizard-skill-pool {
+    background-color: var(--card-bg);
+    border-radius: var(--radius-lg);
+    padding: var(--spacing-md);
+}
+
+/* Slot counter badge inside tier label */
+.slot-counter {
+    float: right;
+    font-size: 0.8rem;
+    font-weight: 700;
+    padding: 2px 10px;
+    border-radius: var(--radius-sm);
+    background-color: rgba(0, 0, 0, 0.06);
+    color: var(--text-muted);
+    transition: background-color 0.2s, color 0.2s;
+}
+
+.slot-counter.slot-full {
+    background-color: rgba(76, 175, 80, 0.15);
+    color: #2E7D32;
+}
+
+.slot-counter.slot-over {
+    background-color: rgba(231, 76, 60, 0.15);
+    color: #c0392b;
+}
+
+/* ===== STUNTS PAGE ===== */
+
+#view-stunts {
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+.stunts-container {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+    margin-bottom: var(--spacing-lg);
+}
+
+.stunt-card {
+    background-color: var(--card-bg);
+    border-radius: var(--radius-lg);
+    padding: var(--spacing-lg);
+    position: relative;
+}
+
+.stunt-card .stunt-number {
+    position: absolute;
+    top: var(--spacing-md);
+    right: var(--spacing-md);
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background-color: var(--btn-blue);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 0.875rem;
+}
+
+.stunt-name {
+    width: 100%;
+    padding: 10px;
+    font-size: 1.125rem;
+    font-weight: 600;
+    border: 2px solid var(--border-color);
+    border-radius: var(--radius-md);
+    margin-bottom: var(--spacing-sm);
+}
+
+.stunt-description {
+    width: 100%;
+    padding: 10px;
+    font-size: 1rem;
+    border: 2px solid var(--border-color);
+    border-radius: var(--radius-md);
+    min-height: 80px;
+    resize: vertical;
+}
+
+.btn-remove-stunt {
+    position: absolute;
+    top: var(--spacing-sm);
+    left: var(--spacing-sm);
+    background-color: var(--error-red);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    font-size: 1.5rem;
+    line-height: 1;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform var(--transition-fast);
+}
+
+.btn-remove-stunt:hover {
+    transform: scale(1.1);
+}
+
+.refresh-display {
+    background-color: white;
+    border: 2px solid var(--btn-blue);
+    border-radius: var(--radius-lg);
+    padding: var(--spacing-lg);
+    text-align: center;
+    margin-bottom: var(--spacing-lg);
+}
+
+.refresh-display h3 {
+    color: var(--btn-blue);
+    margin-bottom: var(--spacing-sm);
+}
+
+.refresh-value {
+    font-size: 3rem;
+    font-weight: bold;
+    color: var(--btn-blue);
+}
+
+.refresh-help {
+    font-size: 0.875rem;
+    color: var(--text-muted);
+    margin-top: var(--spacing-sm);
+}
+
+/* ===== CHARACTER SHEET ===== */
+
+#view-character-sheet {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.character-header {
+    text-align: center;
+    margin-bottom: var(--spacing-xl);
+}
+
+.character-name-display {
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: var(--btn-blue);
+    margin-bottom: var(--spacing-sm);
+}
+
+.character-name-input {
+    width: 100%;
+    box-sizing: border-box;
+    font-size: 2rem;
+    font-weight: bold;
+    text-align: center;
+    border: 2px dashed var(--border-color);
+    padding: var(--spacing-md);
+    margin-bottom: var(--spacing-md);
+}
+
+.character-section {
+    margin-bottom: var(--spacing-xl);
+}
+
+.character-section h3 {
+    color: var(--btn-blue);
+    border-bottom: 2px solid var(--btn-blue);
+    padding-bottom: var(--spacing-sm);
+    margin-bottom: var(--spacing-md);
+}
+
+.aspects-grid {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+}
+
+.aspect-group-header {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--btn-blue);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-top: var(--spacing-md);
+    margin-bottom: var(--spacing-xs);
+    padding-bottom: var(--spacing-xs);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.aspect-group-header:first-child {
+    margin-top: 0;
+}
+
+.aspect-display {
+    background-color: var(--card-bg);
+    padding: var(--spacing-md);
+    border-radius: var(--radius-md);
+}
+
+.aspect-value {
+    font-size: 1.125rem;
+    color: var(--text-light);
+    font-style: italic;
+}
+
+.skills-display {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+}
+
+.skill-tier-group {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--spacing-sm);
+    margin-bottom: calc(var(--spacing-sm) + 5px);
+}
+
+.skill-tier-group:last-child {
+    margin-bottom: 0;
+}
+
+.skill-item {
+    background-color: var(--card-bg);
+    padding: var(--spacing-md);
+    border-radius: var(--radius-md);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.skill-name {
+    font-weight: 500;
+}
+
+.skill-rating {
+    font-weight: bold;
+    color: var(--btn-blue);
+    font-size: 1.25rem;
+}
+
+.stunts-display {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+}
+
+.stunt-display {
+    background-color: var(--card-bg);
+    padding: var(--spacing-md);
+    border-radius: var(--radius-md);
+}
+
+.stunt-display-name {
+    font-weight: 600;
+    font-size: 1.125rem;
+    margin-bottom: var(--spacing-xs);
+    color: var(--text-dark);
+}
+
+.stunt-display-description {
+    color: var(--text-light);
+}
+
+.stress-tracks {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--spacing-lg);
+}
+
+.stress-track h4 {
+    margin-bottom: var(--spacing-sm);
+    color: var(--text-dark);
+}
+
+.stress-boxes {
+    display: flex;
+    gap: var(--spacing-sm);
+}
+
+.stress-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+}
+
+.stress-box input[type="checkbox"] {
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+}
+
+.stress-box span {
+    font-size: 0.875rem;
+    color: var(--text-muted);
+    margin-top: var(--spacing-xs);
+}
+
+.consequences-display {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+}
+
+.consequence-slot {
+    background-color: var(--card-bg);
+    padding: var(--spacing-md);
+    border-radius: var(--radius-md);
+}
+
+.consequence-slot h4 {
+    margin-bottom: var(--spacing-sm);
+    color: var(--text-dark);
+}
+
+.consequence-aspect {
+    width: 100%;
+    padding: var(--spacing-sm);
+    border: 2px solid var(--border-color);
+    border-radius: var(--radius-sm);
+}
+
+.consequence-used {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    margin-top: var(--spacing-sm);
+    cursor: pointer;
+}
+
+.notes-area {
+    width: 100%;
+    min-height: 120px;
+    padding: var(--spacing-md);
+    border: 2px solid var(--border-color);
+    border-radius: var(--radius-md);
+    font-family: inherit;
+}
+
+/* ===== LOAD PAGE ===== */
+
+#view-load {
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+#view-load h2 {
+    text-align: center;
+    margin-bottom: var(--spacing-xl);
+}
+
+/* ===== INFO PAGE ===== */
+
+#view-info {
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+.info-section {
+    margin-bottom: var(--spacing-xl);
+}
+
+.info-section h3 {
+    color: var(--btn-blue);
+    margin-bottom: var(--spacing-md);
+}
+
+.info-section p {
+    color: var(--text-light);
+    line-height: 1.8;
+}
+
+/* ===== SETTINGS PAGE ===== */
+
+.settings-section {
+    margin-bottom: var(--spacing-xl);
+}
+
+.settings-section h3 {
+    color: var(--btn-blue);
+    border-bottom: 2px solid var(--btn-blue);
+    padding-bottom: var(--spacing-sm);
+    margin-bottom: var(--spacing-md);
+}
+
+.language-options {
+    display: flex;
+    gap: var(--spacing-md);
+    flex-wrap: wrap;
+}
+
+.language-option {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+    padding: var(--spacing-md) var(--spacing-lg);
+    background-color: var(--card-bg);
+    border: 3px solid transparent;
+    border-radius: var(--radius-lg);
+    cursor: pointer;
+    font-size: 1.125rem;
+    font-weight: 500;
+    color: var(--text-dark);
+    transition: border-color var(--transition-fast), transform var(--transition-fast), box-shadow var(--transition-fast);
+    min-width: 160px;
+}
+
+.language-option:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+.language-option.active {
+    border-color: var(--btn-blue);
+    background-color: white;
+    box-shadow: var(--shadow-sm);
+}
+
+.lang-flag {
+    font-size: 2rem;
+}
+
+.lang-name {
+    font-weight: 600;
+}
+
+/* ===== EDIT MODE ===== */
+
+/* Yellow left border on the whole sheet when editing */
+.view-character-sheet.edit-mode-active {
+    border-left: 4px solid #E6A817;
+}
+
+/* Hint text shown at top of skills area */
+.edit-hint {
+    text-align: center;
+    color: #E6A817;
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin-bottom: var(--spacing-sm);
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-5px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+/* --- Editable Aspects --- */
+
+.aspect-edit-input {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 8px 12px;
+    font-size: 0.95rem;
+    font-family: inherit;
+    border: 2px solid #E6A817;
+    border-radius: var(--radius-md);
+    background-color: #FFFDE7;
+    color: var(--text-primary);
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.aspect-edit-input:focus {
+    border-color: #CC9400;
+    box-shadow: 0 0 0 3px rgba(230, 168, 23, 0.25);
+}
+
+/* --- Drag-and-Drop Skill Tiles --- */
+
+/* Each tier becomes a drop zone */
+.skill-tier-drop-zone {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--spacing-xs);
+    min-height: 48px;
+    padding: 8px;
+    border: 2px dashed #ccc;
+    border-radius: var(--radius-md);
+    background-color: rgba(255, 255, 255, 0.5);
+    transition: border-color 0.2s, background-color 0.2s;
+    margin-bottom: calc(var(--spacing-sm) + 5px);
+}
+
+.skill-tier-drop-zone.drag-over {
+    border-color: #E6A817;
+    background-color: rgba(230, 168, 23, 0.08);
+}
+
+.skill-tier-drop-zone.invalid-drop {
+    border-color: #e74c3c;
+    background-color: rgba(231, 76, 60, 0.06);
+}
+
+/* Tier label inside the drop zone */
+.skill-tier-label {
+    grid-column: 1 / -1;
+    font-weight: 700;
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    padding-bottom: 4px;
+    border-bottom: 1px solid #e0e0e0;
+    margin-bottom: 4px;
+    user-select: none;
+}
+
+/* Individual draggable skill tile */
+.skill-tile {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px 12px;
+    background-color: var(--btn-blue);
+    color: #fff;
+    font-weight: 600;
+    font-size: 0.85rem;
+    border-radius: var(--radius-md);
+    cursor: grab;
+    user-select: none;
+    transition: transform 0.15s, box-shadow 0.15s, opacity 0.15s;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+}
+
+.skill-tile:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+.skill-tile:active,
+.skill-tile.dragging {
+    cursor: grabbing;
+    opacity: 0.6;
+    transform: scale(0.95);
+    box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+}
+
+/* Ghost placeholder while dragging */
+.skill-tile-placeholder {
+    padding: 8px 12px;
+    border: 2px dashed #E6A817;
+    border-radius: var(--radius-md);
+    background-color: rgba(230, 168, 23, 0.1);
+    min-height: 36px;
+}
+
+/* Unassigned skills pool */
+.skill-pool {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-xs);
+    padding: 8px;
+    min-height: 48px;
+    border: 2px dashed #aaa;
+    border-radius: var(--radius-md);
+    background-color: rgba(0, 0, 0, 0.02);
+    margin-bottom: var(--spacing-md);
+    transition: border-color 0.2s, background-color 0.2s;
+}
+
+.skill-pool.drag-over {
+    border-color: #E6A817;
+    background-color: rgba(230, 168, 23, 0.08);
+}
+
+.skill-pool-label {
+    width: 100%;
+    font-weight: 700;
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    padding-bottom: 4px;
+    border-bottom: 1px solid #e0e0e0;
+    margin-bottom: 4px;
+    user-select: none;
+}
+
+.skill-tile.unassigned {
+    background-color: #999;
+}
+
+/* ===== RESPONSIVE ADJUSTMENTS ===== */
+
+@media (max-width: 768px) {
+    .stress-tracks {
+        grid-template-columns: 1fr;
+    }
+    
+    .skill-tier-group {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .progress-indicator {
+        flex-wrap: wrap;
+    }
+    
+    .step-label {
+        display: none;
+    }
+}
+
+@media (min-width: 768px) {
+    .aspects-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}

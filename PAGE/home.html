@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fate Create</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+<div id="app-container">
+
+        <div id="view-home" class="spa-view">
+            </div>
+
+        <div id="view-quick-setup" class="spa-view hidden">
+            </div>
+
+    </div>
+    <div id="view-home" class="spa-view">
+        <img src="logo-original.png" alt="Logo">
+        <button id="goto-setup">NEW</button>
+        <button id="goto-load">LOAD</button>
+    </div>
+
+    <div id="view-quick-setup" class="spa-view hidden">
+        <h2>Quick Setup?</h2>
+        <button id="goto-concept">Quick Setup</button>
+        <button id="goto-character-blank">Skip for Now</button>
+    </div>
+
+    <div id="view-wizard-concept" class="spa-view hidden">
+        <h2>Step 1: Character Concept</h2>
+        <button id="goto-phase">Next: Phases</button>
+    </div>
+
+    <div id="view-character-sheet" class="spa-view hidden">
+        <h2>Character Hub</h2>
+        </div>
+<script src="app.js"></script>
+</body>

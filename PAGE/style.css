@@ -1,0 +1,65 @@
+/* Base Reset & Theme */
+:root {
+    --bg-cream: #FAF9F6;      /* The soft off-white background in HOME.jpg */
+    --btn-blue: #6699BB;      /* The slate blue color of your NEW/LOAD buttons */
+    --btn-shadow: #4D738E;
+    --card-bg: #EEF3F7;
+}
+
+body {
+    background-color: var(--bg-cream);
+    font-family: system-ui, sans-serif;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+.creation-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+.menu-icon {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    width: 60px;
+    height: 60px;
+    cursor: pointer;
+}
+
+.view-screen {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: 450px; /* Great for mobile-first scaling */
+    padding: 20px;
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* We will style your custom buttons to match the exact 3D pill-look in HOME.jpg */
+.ui-button {
+    background-color: var(--btn-blue);
+    color: white;
+    border: none;
+    padding: 15px 40px;
+    font-size: 24px;
+    font-weight: bold;
+    border-radius: 12px;
+    cursor: pointer;
+    box-shadow: 0 6px 0 var(--btn-shadow);
+    transition: transform 0.1s ease;
+}
+
+.ui-button:active {
+    transform: translateY(4px);
+    box-shadow: 0 2px 0 var(--btn-shadow);
+}
