@@ -140,12 +140,49 @@ function setupEventListeners() {
     });
     
     // === STUNTS PAGE ===
-    document.getElementById('btn-back-stunts').addEventListener('click', () => goBack());
+    document.getElementById('btn-back-stunts').addEventListener('click', () => {
+        // If editing from character sheet, go back to character sheet instead of wizard flow
+        if (editingStuntsFromSheet) {
+            editingStuntsFromSheet = false;
+            navigateTo('view-character-sheet');
+            // Re-enable edit mode
+            editModeActive = true;
+            const editBtn = document.getElementById('btn-edit-mode');
+            editBtn.classList.add('active');
+            editBtn.textContent = I18N.t('btnDoneEdit');
+            document.getElementById('view-character-sheet').classList.add('edit-mode-active');
+            renderEditableAspects();
+            renderDraggableSkills();
+            renderEditableStunts();
+        } else {
+            goBack();
+        }
+    });
     document.getElementById('btn-add-stunt').addEventListener('click', addStuntCard);
     document.getElementById('btn-finish-wizard').addEventListener('click', () => {
         saveStuntsToCharacter();
-        displayCharacterSheet();
-        navigateTo('view-character-sheet');
+        
+        if (editingStuntsFromSheet) {
+            // Return to character sheet and re-enable edit mode
+            editingStuntsFromSheet = false;
+            displayCharacterSheet();
+            navigateTo('view-character-sheet');
+            
+            // Re-enable edit mode on the sheet
+            editModeActive = true;
+            const editBtn = document.getElementById('btn-edit-mode');
+            editBtn.classList.add('active');
+            editBtn.textContent = I18N.t('btnDoneEdit');
+            document.getElementById('view-character-sheet').classList.add('edit-mode-active');
+            renderEditableAspects();
+            renderDraggableSkills();
+            renderEditableStunts();
+            
+            showToast(I18N.t('editModeOn'), 'success');
+        } else {
+            displayCharacterSheet();
+            navigateTo('view-character-sheet');
+        }
     });
     
     // === CHARACTER SHEET ===
@@ -960,6 +997,7 @@ function selectLanguage(lang) {
             charSheet.classList.add('edit-mode-active');
             renderEditableAspects();
             renderDraggableSkills();
+            renderEditableStunts();
         }
     }
     
@@ -973,6 +1011,7 @@ function selectLanguage(lang) {
 // ===== EDIT MODE =====
 
 let editModeActive = false;
+let editingStuntsFromSheet = false;
 
 // Toggle edit mode on/off
 function toggleEditMode() {
@@ -989,6 +1028,7 @@ function toggleEditMode() {
         
         renderEditableAspects();
         renderDraggableSkills();
+        renderEditableStunts();
         
         showToast(I18N.t('editModeOn'), 'info');
     } else {
@@ -1335,4 +1375,72 @@ function saveEditModeChanges() {
     
     // Update timestamp
     char.updatedAt = new Date().toISOString();
+}
+
+// --- Editable Stunts ---
+
+function renderEditableStunts() {
+    const char = getCharacter();
+    const stuntsDisplay = document.getElementById('stunts-display');
+    
+    // Keep existing stunt display but add the "+" button at the end
+    // First, remove any existing edit button (in case of re-render)
+    const existingBtn = stuntsDisplay.querySelector('.edit-add-stunt-btn');
+    if (existingBtn) existingBtn.remove();
+    const existingHint = stuntsDisplay.querySelector('.edit-hint');
+    if (existingHint) existingHint.remove();
+    
+    // Add hint text
+    const hint = document.createElement('p');
+    hint.className = 'edit-hint';
+    hint.textContent = I18N.t('editStuntsHint');
+    stuntsDisplay.appendChild(hint);
+    
+    // Add "+" button
+    const addBtn = document.createElement('button');
+    addBtn.className = 'edit-add-stunt-btn';
+    addBtn.textContent = I18N.t('editStuntsBtn');
+    addBtn.addEventListener('click', () => {
+        // Save current aspect/skill edits before leaving
+        saveEditModeChanges();
+        
+        // Set flag so stunts page knows we came from edit mode
+        editingStuntsFromSheet = true;
+        
+        // Set up the stunts wizard page with existing stunts
+        setupStuntsPageForEdit();
+        
+        // Navigate to the stunts wizard page
+        navigateTo('view-stunts');
+    });
+    stuntsDisplay.appendChild(addBtn);
+}
+
+function setupStuntsPageForEdit() {
+    const char = getCharacter();
+    const container = document.getElementById('stunts-container');
+    container.innerHTML = '';
+    
+    // If character has existing stunts, pre-fill them
+    if (char.stunts && char.stunts.length > 0) {
+        char.stunts.forEach((stunt, index) => {
+            createStuntCard(index);
+            
+            // Fill in the stunt data
+            const card = container.querySelector(`.stunt-card[data-index="${index}"]`);
+            if (card) {
+                const nameInput = card.querySelector('.stunt-name');
+                const descInput = card.querySelector('.stunt-description');
+                if (nameInput) nameInput.value = stunt.name || '';
+                if (descInput) descInput.value = stunt.description || '';
+            }
+        });
+    } else {
+        // No existing stunts — create 3 empty cards like the normal wizard
+        for (let i = 0; i < 3; i++) {
+            createStuntCard(i);
+        }
+    }
+    
+    updateRefreshDisplay();
 }

@@ -123,6 +123,9 @@ const I18N = {
         editModeOff: { en: 'Edit mode disabled', 'zh-TW': '編輯模式已關閉' },
         dragSkillHint: { en: 'Drag skills between tiers to rearrange', 'zh-TW': '拖曳技能到不同等級來重新排列' },
         unassignedSkills: { en: 'Unassigned Skills', 'zh-TW': '未分配技能' },
+        editStuntsBtn: { en: '+', 'zh-TW': '+' },
+        editStuntsHint: { en: 'Tap + to add or edit stunts', 'zh-TW': '點擊 + 新增或編輯特技' },
+        btnSaveStunts: { en: 'Save Stunts', 'zh-TW': '儲存特技' },
 
         // === DICE ROLLER ===
         diceTotal: { en: 'Total', 'zh-TW': '總計' },

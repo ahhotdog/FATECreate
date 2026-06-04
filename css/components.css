@@ -611,11 +611,17 @@
 }
 
 .fate-die.die-plus {
-    color: #2E7D32;
+    color: #5d8baa;
+    font-weight: bolder;
+    font-size: 50px;
+    padding-bottom: 10px;
 }
 
 .fate-die.die-minus {
-    color: #C62828;
+    color: #5d8baa;
+    font-weight: bolder;
+    font-size: 50px;
+    padding-bottom: 10px;
 }
 
 .fate-die.die-blank {

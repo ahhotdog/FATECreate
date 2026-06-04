@@ -713,6 +713,29 @@
     background-color: #999;
 }
 
+/* --- Edit Mode: Add Stunt Button --- */
+.edit-add-stunt-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    padding: 12px;
+    margin-top: var(--spacing-sm);
+    border: 2px dashed #E6A817;
+    border-radius: var(--radius-md);
+    background-color: rgba(230, 168, 23, 0.06);
+    color: #E6A817;
+    font-size: 1.5rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background-color 0.2s, border-color 0.2s;
+}
+
+.edit-add-stunt-btn:hover {
+    background-color: rgba(230, 168, 23, 0.15);
+    border-color: #CC9400;
+}
+
 /* ===== RESPONSIVE ADJUSTMENTS ===== */
 
 @media (max-width: 768px) {
