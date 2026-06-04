@@ -155,9 +155,9 @@ a:hover {
     left: 15px;
     width: 60px;
     height: 60px;
-    background: var(--bg-cream);
     border: none;
     cursor: pointer;
+    background: rgba(0, 0, 255, 0);
     z-index: 1000;
     transition: transform var(--transition-fast), opacity 0.3s ease;
     padding: 5px;
