@@ -528,32 +528,33 @@
             Close
           </button>
         </div>
+
+        <div id="paypal-container-H5FATGBWSULTA"></div>
+        <script>
+          paypal
+            .HostedButtons({
+              hostedButtonId: "H5FATGBWSULTA",
+            })
+            .render("#paypal-container-H5FATGBWSULTA");
+        </script>
       </div>
+    </div>
 
-      <!-- SETTINGS PAGE -->
-      <div id="view-settings" class="spa-view hidden">
-        <h2 data-i18n="settingsTitle">Settings</h2>
+    <!-- SETTINGS PAGE -->
+    <div id="view-settings" class="spa-view hidden">
+      <h2 data-i18n="settingsTitle">Settings</h2>
 
-        <div class="settings-section">
-          <h3 data-i18n="languageTitle">Language</h3>
-          <div class="language-options">
-            <button class="language-option" id="lang-en" data-lang="en">
-              <span class="lang-flag">🇺🇸</span>
-              <span class="lang-name">English</span>
-            </button>
-            <button class="language-option" id="lang-zh-TW" data-lang="zh-TW">
-              <span class="lang-flag">🇹🇼</span>
-              <span class="lang-name">繁體中文</span>
-            </button>
-            <div id="paypal-container-H5FATGBWSULTA"></div>
-            <script>
-              paypal
-                .HostedButtons({
-                  hostedButtonId: "H5FATGBWSULTA",
-                })
-                .render("#paypal-container-H5FATGBWSULTA");
-            </script>
-          </div>
+      <div class="settings-section">
+        <h3 data-i18n="languageTitle">Language</h3>
+        <div class="language-options">
+          <button class="language-option" id="lang-en" data-lang="en">
+            <span class="lang-flag">🇺🇸</span>
+            <span class="lang-name">English</span>
+          </button>
+          <button class="language-option" id="lang-zh-TW" data-lang="zh-TW">
+            <span class="lang-flag">🇹🇼</span>
+            <span class="lang-name">繁體中文</span>
+          </button>
         </div>
 
         <div class="button-group">
