@@ -620,12 +620,33 @@
 
 .skill-tier-drop-zone.drag-over {
     border-color: #E6A817;
+    border-style: solid;
     background-color: rgba(230, 168, 23, 0.08);
+    animation: dropZonePulse 0.8s ease-in-out infinite;
 }
 
 .skill-tier-drop-zone.invalid-drop {
     border-color: #e74c3c;
+    border-style: solid;
     background-color: rgba(231, 76, 60, 0.06);
+    animation: dropZoneReject 0.3s ease;
+}
+
+@keyframes dropZonePulse {
+    0%, 100% {
+        background-color: rgba(230, 168, 23, 0.06);
+        box-shadow: inset 0 0 0 0 rgba(230, 168, 23, 0);
+    }
+    50% {
+        background-color: rgba(230, 168, 23, 0.15);
+        box-shadow: inset 0 0 12px 0 rgba(230, 168, 23, 0.1);
+    }
+}
+
+@keyframes dropZoneReject {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-4px); }
+    75% { transform: translateX(4px); }
 }
 
 /* Tier label inside the drop zone */
@@ -653,30 +674,80 @@
     border-radius: var(--radius-md);
     cursor: grab;
     user-select: none;
-    transition: transform 0.15s, box-shadow 0.15s, opacity 0.15s;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease, background-color 0.2s ease;
     box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+    position: relative;
 }
 
 .skill-tile:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    transform: translateY(-2px) scale(1.03);
+    box-shadow: 0 6px 12px rgba(0,0,0,0.2);
 }
 
-.skill-tile:active,
+.skill-tile:active {
+    cursor: grabbing;
+    transform: scale(0.95);
+}
+
+/* Original tile fades when being dragged */
 .skill-tile.dragging {
     cursor: grabbing;
-    opacity: 0.6;
-    transform: scale(0.95);
-    box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+    opacity: 0.3;
+    transform: scale(0.9);
+    box-shadow: none;
+    background-color: #aaa;
 }
 
-/* Ghost placeholder while dragging */
+/* Floating drag ghost that follows cursor/finger */
+.drag-ghost {
+    position: fixed;
+    z-index: 10000;
+    pointer-events: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px 16px;
+    background-color: var(--btn-blue);
+    color: #fff;
+    font-weight: 700;
+    font-size: 0.9rem;
+    border-radius: var(--radius-md);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.3), 0 0 0 3px rgba(230, 168, 23, 0.5);
+    transform: rotate(-2deg) scale(1.08);
+    opacity: 0.92;
+    transition: transform 0.05s ease, opacity 0.15s ease;
+    white-space: nowrap;
+    animation: ghostAppear 0.15s ease-out;
+}
+
+.drag-ghost.unassigned {
+    background-color: #999;
+}
+
+@keyframes ghostAppear {
+    from {
+        opacity: 0;
+        transform: rotate(0deg) scale(0.8);
+    }
+    to {
+        opacity: 0.92;
+        transform: rotate(-2deg) scale(1.08);
+    }
+}
+
+/* Ghost placeholder left behind in original position */
 .skill-tile-placeholder {
     padding: 8px 12px;
     border: 2px dashed #E6A817;
     border-radius: var(--radius-md);
     background-color: rgba(230, 168, 23, 0.1);
     min-height: 36px;
+    animation: placeholderPulse 1.2s ease-in-out infinite;
+}
+
+@keyframes placeholderPulse {
+    0%, 100% { background-color: rgba(230, 168, 23, 0.06); }
+    50% { background-color: rgba(230, 168, 23, 0.18); }
 }
 
 /* Unassigned skills pool */
@@ -695,7 +766,9 @@
 
 .skill-pool.drag-over {
     border-color: #E6A817;
+    border-style: solid;
     background-color: rgba(230, 168, 23, 0.08);
+    animation: dropZonePulse 0.8s ease-in-out infinite;
 }
 
 .skill-pool-label {
@@ -711,6 +784,39 @@
 
 .skill-tile.unassigned {
     background-color: #999;
+}
+
+/* "Custom" skill tile — always in pool, dashed border */
+.skill-tile.custom-skill-generator {
+    background-color: transparent;
+    color: #E6A817;
+    border: 2px dashed #E6A817;
+    font-weight: 700;
+    box-shadow: none;
+}
+
+.skill-tile.custom-skill-generator:hover {
+    background-color: rgba(230, 168, 23, 0.1);
+    box-shadow: 0 2px 8px rgba(230, 168, 23, 0.2);
+}
+
+.skill-tile.custom-skill-generator.dragging {
+    background-color: rgba(230, 168, 23, 0.05);
+    opacity: 0.5;
+}
+
+/* User-created custom skill tiles — green tint to distinguish */
+.skill-tile.custom-skill {
+    background-color: #2ecc71;
+}
+
+.skill-tile.custom-skill.unassigned {
+    background-color: #7f8c8d;
+}
+
+.drag-ghost.custom-ghost {
+    background-color: #E6A817;
+    color: #fff;
 }
 
 /* --- Edit Mode: Add Stunt Button --- */

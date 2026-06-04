@@ -45,7 +45,7 @@ function validateName(name) {
     };
 }
 
-// Validate skill pyramid
+// Validate skill pyramid (sandbox mode — no slot limits)
 function validateSkillPyramid(skills) {
     const errors = [];
     
@@ -63,24 +63,7 @@ function validateSkillPyramid(skills) {
         }
     });
     
-    // Check pyramid structure
-    if (skillsByRating[4].length !== 1) {
-        errors.push(`Need exactly 1 skill at +4 (currently ${skillsByRating[4].length})`);
-    }
-    
-    if (skillsByRating[3].length !== 2) {
-        errors.push(`Need exactly 2 skills at +3 (currently ${skillsByRating[3].length})`);
-    }
-    
-    if (skillsByRating[2].length !== 3) {
-        errors.push(`Need exactly 3 skills at +2 (currently ${skillsByRating[2].length})`);
-    }
-    
-    if (skillsByRating[1].length !== 4) {
-        errors.push(`Need exactly 4 skills at +1 (currently ${skillsByRating[1].length})`);
-    }
-    
-    // Check for duplicates
+    // Check for duplicates only — no slot limits in sandbox mode
     const allSkills = Object.keys(skills);
     const uniqueSkills = new Set(allSkills);
     if (allSkills.length !== uniqueSkills.size) {

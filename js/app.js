@@ -320,12 +320,12 @@ function setupSkillsPage() {
     // Map tier keys to i18n keys
     const tierI18nKeys = { great: 'tierGreat', good: 'tierGood', fair: 'tierFair', average: 'tierAverage' };
     
-    // Build tier drop zones (highest first)
+    // Build tier drop zones (highest first) — no slot limits in sandbox mode
     const tiers = [
-        { key: 'great',   rating: 4, slots: 1 },
-        { key: 'good',    rating: 3, slots: 2 },
-        { key: 'fair',    rating: 2, slots: 3 },
-        { key: 'average', rating: 1, slots: 4 }
+        { key: 'great',   rating: 4 },
+        { key: 'good',    rating: 3 },
+        { key: 'fair',    rating: 2 },
+        { key: 'average', rating: 1 }
     ];
     
     tiers.forEach(tier => {
@@ -334,12 +334,10 @@ function setupSkillsPage() {
         const zone = document.createElement('div');
         zone.className = 'skill-tier-drop-zone wizard-tier-zone';
         zone.dataset.rating = tier.rating;
-        zone.dataset.maxSlots = tier.slots;
-        
-        // Tier label with slot counter
+        // Tier label with skill count (no slot limit in sandbox mode)
         const label = document.createElement('div');
         label.className = 'skill-tier-label';
-        label.innerHTML = `${tierLabel} (+${tier.rating}) <span class="slot-counter" id="slot-counter-${tier.rating}">0 / ${tier.slots}</span>`;
+        label.innerHTML = `${tierLabel} (+${tier.rating}) <span class="slot-counter" id="slot-counter-${tier.rating}">0</span>`;
         zone.appendChild(label);
         
         // Drop zone events
@@ -373,11 +371,13 @@ function setupSkillsPage() {
     Object.entries(assignedSkills).forEach(([skillName, rating]) => {
         const zone = pyramid.querySelector(`.wizard-tier-zone[data-rating="${rating}"]`);
         if (zone) {
-            zone.appendChild(createWizardSkillTile(skillName));
+            const tile = createWizardSkillTile(skillName);
+            if (isCustomSkill(skillName)) tile.classList.add('custom-skill');
+            zone.appendChild(tile);
         }
     });
     
-    // Place unassigned skills into the pool
+    // Place unassigned standard skills into the pool
     FATE_SKILLS.forEach(skillName => {
         if (!assignedSkills[skillName]) {
             const tile = createWizardSkillTile(skillName);
@@ -385,6 +385,12 @@ function setupSkillsPage() {
             pool.appendChild(tile);
         }
     });
+    
+    // Add the "Custom" generator tile (always present in pool)
+    const customTile = createWizardSkillTile(CUSTOM_SKILL_MARKER);
+    customTile.classList.add('custom-skill-generator', 'unassigned');
+    customTile.textContent = I18N.t('customSkillTile');
+    pool.appendChild(customTile);
     
     pool.addEventListener('dragover', handleWizardDragOver);
     pool.addEventListener('dragenter', handleWizardDragEnter);
@@ -406,31 +412,74 @@ function setupSkillsPage() {
 function createWizardSkillTile(skillName) {
     const tile = document.createElement('div');
     tile.className = 'skill-tile';
-    tile.textContent = I18N.skill(skillName);
     tile.dataset.skill = skillName;
     tile.draggable = true;
     
+    // Handle custom skill generator tile display
+    if (skillName === CUSTOM_SKILL_MARKER) {
+        tile.textContent = I18N.t('customSkillTile');
+        tile.classList.add('custom-skill-generator');
+    } else {
+        tile.textContent = I18N.skill(skillName);
+        if (isCustomSkill(skillName)) tile.classList.add('custom-skill');
+    }
+    
+    // Drag events (PC)
     tile.addEventListener('dragstart', (e) => {
         draggedSkill = skillName;
         tile.classList.add('dragging');
         e.dataTransfer.effectAllowed = 'move';
         e.dataTransfer.setData('text/plain', skillName);
+        
+        // Create a custom drag image (ghost)
+        const isUnassigned = tile.classList.contains('unassigned');
+        const isCustomGen = skillName === CUSTOM_SKILL_MARKER;
+        const ghostText = isCustomGen ? I18N.t('customSkillTile') : I18N.skill(skillName);
+        const ghost = createDragGhost(ghostText, isUnassigned);
+        if (isCustomGen) ghost.classList.add('custom-ghost');
+        ghost.style.left = '-9999px';
+        ghost.style.top = '-9999px';
+        e.dataTransfer.setDragImage(ghost, ghost.offsetWidth / 2, ghost.offsetHeight + 12);
+    });
+    
+    tile.addEventListener('drag', (e) => {
+        if (e.clientX > 0 && e.clientY > 0) {
+            moveDragGhost(e.clientX, e.clientY);
+        }
     });
     
     tile.addEventListener('dragend', () => {
         tile.classList.remove('dragging');
         draggedSkill = null;
+        removeDragGhost();
         document.querySelectorAll('.drag-over, .invalid-drop').forEach(el => {
             el.classList.remove('drag-over', 'invalid-drop');
         });
     });
     
-    // Touch support
+    // Touch support for mobile
     tile.addEventListener('touchstart', (e) => {
         draggedSkill = skillName;
         tile.classList.add('dragging');
         tile._originalParent = tile.parentElement;
+        
+        // Create floating ghost at touch position
+        const isUnassigned = tile.classList.contains('unassigned');
+        const isCustomGen = skillName === CUSTOM_SKILL_MARKER;
+        const ghostText = isCustomGen ? I18N.t('customSkillTile') : I18N.skill(skillName);
+        const ghost = createDragGhost(ghostText, isUnassigned);
+        if (isCustomGen) ghost.classList.add('custom-ghost');
+        moveDragGhost(e.touches[0].clientX, e.touches[0].clientY);
     });
+    
+    tile.addEventListener('touchmove', (e) => {
+        if (draggedSkill) {
+            e.preventDefault();
+            const touch = e.touches[0];
+            moveDragGhost(touch.clientX, touch.clientY);
+            highlightTouchDropZone(touch.clientX, touch.clientY, '.wizard-tier-zone, .wizard-skill-pool');
+        }
+    }, { passive: false });
     
     return tile;
 }
@@ -477,7 +526,11 @@ function handleWizardTouchEnd(e) {
     if (!draggedSkill) return;
     
     const touch = e.changedTouches[0];
+    
+    // Temporarily hide ghost so elementFromPoint finds the real element
+    if (dragGhostEl) dragGhostEl.style.display = 'none';
     const dropTarget = document.elementFromPoint(touch.clientX, touch.clientY);
+    if (dragGhostEl) dragGhostEl.style.display = '';
     
     if (!dropTarget) {
         cancelTouchDrag();
@@ -494,13 +547,39 @@ function handleWizardTouchEnd(e) {
         }
     }
     
+    removeDragGhost();
     document.querySelectorAll('.dragging').forEach(el => el.classList.remove('dragging'));
-    document.querySelectorAll('.drag-over').forEach(el => el.classList.remove('drag-over'));
+    document.querySelectorAll('.drag-over, .invalid-drop').forEach(el => el.classList.remove('drag-over', 'invalid-drop'));
     draggedSkill = null;
 }
 
 // Move a skill tile into a wizard zone
 function moveWizardSkillToZone(skillName, zone) {
+    // Handle custom skill creation
+    if (skillName === CUSTOM_SKILL_MARKER) {
+        // Don't allow dropping custom tile back to pool (rating 0)
+        if (zone.dataset.rating === '0') return;
+        
+        // Collect existing skills from all tier zones for duplicate check
+        const existingSkills = {};
+        document.querySelectorAll('#skill-pyramid .wizard-tier-zone .skill-tile').forEach(tile => {
+            const s = tile.dataset.skill;
+            if (s && s !== CUSTOM_SKILL_MARKER) existingSkills[s] = true;
+        });
+        
+        const customName = promptCustomSkillName(existingSkills);
+        if (!customName) return;
+        
+        // Create the custom skill tile and add it to the zone
+        const newTile = createWizardSkillTile(customName);
+        newTile.classList.add('custom-skill');
+        zone.appendChild(newTile);
+        
+        updateWizardSlotCounters();
+        validateSkillPyramidUI();
+        return;
+    }
+    
     // Remove existing tile
     const existingTile = document.querySelector(`#skill-pyramid .skill-tile[data-skill="${skillName}"]`);
     if (existingTile) {
@@ -509,6 +588,7 @@ function moveWizardSkillToZone(skillName, zone) {
     
     // Create fresh tile
     const newTile = createWizardSkillTile(skillName);
+    if (isCustomSkill(skillName)) newTile.classList.add('custom-skill');
     if (zone.dataset.rating === '0') {
         newTile.classList.add('unassigned');
     }
@@ -519,52 +599,33 @@ function moveWizardSkillToZone(skillName, zone) {
     validateSkillPyramidUI();
 }
 
-// Update the "X / Y" slot counters on each tier
+// Update the skill count on each tier (sandbox mode — no max limits)
 function updateWizardSlotCounters() {
     const tiers = [4, 3, 2, 1];
-    const maxSlots = { 4: 1, 3: 2, 2: 3, 1: 4 };
     
     tiers.forEach(rating => {
         const zone = document.querySelector(`.wizard-tier-zone[data-rating="${rating}"]`);
         if (!zone) return;
         
         const count = zone.querySelectorAll('.skill-tile').length;
-        const max = maxSlots[rating];
         const counter = document.getElementById(`slot-counter-${rating}`);
         
         if (counter) {
-            counter.textContent = `${count} / ${max}`;
+            counter.textContent = `${count}`;
             
-            if (count === max) {
+            // Always show as normal — no over/full states in sandbox mode
+            counter.classList.remove('slot-full', 'slot-over');
+            if (count > 0) {
                 counter.classList.add('slot-full');
-                counter.classList.remove('slot-over');
-            } else if (count > max) {
-                counter.classList.add('slot-over');
-                counter.classList.remove('slot-full');
-            } else {
-                counter.classList.remove('slot-full', 'slot-over');
             }
         }
     });
 }
 
 function validateSkillPyramidUI() {
-    // Read skills from the tile layout
-    const skills = {};
-    const tierZones = document.querySelectorAll('.wizard-tier-zone');
-    
-    tierZones.forEach(zone => {
-        const rating = parseInt(zone.dataset.rating);
-        const tiles = zone.querySelectorAll('.skill-tile');
-        tiles.forEach(tile => {
-            skills[tile.dataset.skill] = rating;
-        });
-    });
-    
-    const validation = validateSkillPyramid(skills);
+    // Sandbox mode — always allow progression (no pyramid enforcement)
     const btnNext = document.getElementById('btn-next-skills');
-    
-    setButtonEnabled(btnNext, validation.valid);
+    setButtonEnabled(btnNext, true);
 }
 
 function saveSkillsToCharacter() {
@@ -576,7 +637,10 @@ function saveSkillsToCharacter() {
         const rating = parseInt(zone.dataset.rating);
         const tiles = zone.querySelectorAll('.skill-tile');
         tiles.forEach(tile => {
-            skills[tile.dataset.skill] = rating;
+            const skill = tile.dataset.skill;
+            // Skip the custom skill generator marker
+            if (skill === CUSTOM_SKILL_MARKER) return;
+            skills[skill] = rating;
         });
     });
     
@@ -1114,8 +1178,83 @@ function renderEditableAspects() {
 
 // --- Drag-and-Drop Skills ---
 
+// Special marker for the "Custom" skill tile
+const CUSTOM_SKILL_MARKER = '__CUSTOM__';
+
 // Currently dragged skill name (shared state for drag events)
 let draggedSkill = null;
+let dragGhostEl = null; // Floating ghost element that follows cursor/finger
+
+// Check if a skill name is a custom (non-standard) skill
+function isCustomSkill(skillName) {
+    return skillName && !FATE_SKILLS.includes(skillName) && skillName !== CUSTOM_SKILL_MARKER;
+}
+
+// Prompt user for a custom skill name, returns the name or null if cancelled
+function promptCustomSkillName(existingSkills) {
+    const name = prompt(I18N.t('customSkillPrompt'));
+    if (!name || !name.trim()) {
+        if (name !== null) showToast(I18N.t('customSkillEmpty'), 'warning');
+        return null;
+    }
+    const trimmed = name.trim();
+    // Check for duplicates (case-insensitive)
+    const allSkills = [...FATE_SKILLS, ...Object.keys(existingSkills || {})];
+    const isDuplicate = allSkills.some(s => s.toLowerCase() === trimmed.toLowerCase());
+    if (isDuplicate) {
+        showToast(I18N.t('customSkillDuplicate'), 'warning');
+        return null;
+    }
+    return trimmed;
+}
+
+// --- Drag Ghost Utilities ---
+
+function createDragGhost(text, isUnassigned) {
+    removeDragGhost(); // Clean up any existing ghost
+    const ghost = document.createElement('div');
+    ghost.className = 'drag-ghost' + (isUnassigned ? ' unassigned' : '');
+    ghost.textContent = text;
+    document.body.appendChild(ghost);
+    dragGhostEl = ghost;
+    return ghost;
+}
+
+function moveDragGhost(clientX, clientY) {
+    if (!dragGhostEl) return;
+    dragGhostEl.style.left = (clientX - dragGhostEl.offsetWidth / 2) + 'px';
+    dragGhostEl.style.top = (clientY - dragGhostEl.offsetHeight - 12) + 'px';
+}
+
+function removeDragGhost() {
+    if (dragGhostEl) {
+        dragGhostEl.remove();
+        dragGhostEl = null;
+    }
+}
+
+// Highlight the drop zone under the touch point
+function highlightTouchDropZone(clientX, clientY, zoneSelectors) {
+    // Remove previous highlights
+    document.querySelectorAll('.drag-over, .invalid-drop').forEach(el => {
+        el.classList.remove('drag-over', 'invalid-drop');
+    });
+    
+    const el = document.elementFromPoint(clientX, clientY);
+    if (!el) return;
+    
+    const zone = el.closest(zoneSelectors);
+    if (zone) {
+        const maxSlots = parseInt(zone.dataset.maxSlots || '999');
+        const currentCount = zone.querySelectorAll('.skill-tile').length;
+        
+        if (zone.dataset.rating !== '0' && maxSlots < 999 && currentCount >= maxSlots) {
+            zone.classList.add('invalid-drop');
+        } else {
+            zone.classList.add('drag-over');
+        }
+    }
+}
 
 function renderDraggableSkills() {
     const char = getCharacter();
@@ -1137,12 +1276,12 @@ function renderDraggableSkills() {
     // Unassigned skills (from FATE_SKILLS not in character)
     const unassignedSkills = FATE_SKILLS.filter(s => !assignedSkills.has(s));
     
-    // Render tier drop zones for +4, +3, +2, +1
+    // Render tier drop zones for +4, +3, +2, +1 (no slot limits in sandbox mode)
     const tiers = [
-        { rating: 4, label: 'Great (+4)', slots: 1 },
-        { rating: 3, label: 'Good (+3)', slots: 2 },
-        { rating: 2, label: 'Fair (+2)', slots: 3 },
-        { rating: 1, label: 'Average (+1)', slots: 4 }
+        { rating: 4, label: 'Great (+4)' },
+        { rating: 3, label: 'Good (+3)' },
+        { rating: 2, label: 'Fair (+2)' },
+        { rating: 1, label: 'Average (+1)' }
     ];
     
     tiers.forEach(tier => {
@@ -1162,7 +1301,9 @@ function renderDraggableSkills() {
             .map(([name]) => name);
         
         skillsAtTier.forEach(skillName => {
-            zone.appendChild(createSkillTile(skillName));
+            const tile = createSkillTile(skillName);
+            if (isCustomSkill(skillName)) tile.classList.add('custom-skill');
+            zone.appendChild(tile);
         });
         
         // Drop zone events
@@ -1196,6 +1337,11 @@ function renderDraggableSkills() {
             pool.appendChild(tile);
         });
         
+        // Add Custom skill generator tile (always available)
+        const customTile = createSkillTile(CUSTOM_SKILL_MARKER);
+        customTile.classList.add('custom-skill-generator');
+        pool.appendChild(customTile);
+        
         pool.addEventListener('dragover', handleDragOver);
         pool.addEventListener('dragenter', handleDragEnter);
         pool.addEventListener('dragleave', handleDragLeave);
@@ -1213,21 +1359,48 @@ function renderDraggableSkills() {
 function createSkillTile(skillName) {
     const tile = document.createElement('div');
     tile.className = 'skill-tile';
-    tile.textContent = I18N.skill(skillName);
     tile.dataset.skill = skillName;
     tile.draggable = true;
     
-    // Drag events
+    // Handle custom skill generator tile display
+    if (skillName === CUSTOM_SKILL_MARKER) {
+        tile.textContent = I18N.t('customSkillTile');
+        tile.classList.add('custom-skill-generator');
+    } else {
+        tile.textContent = I18N.skill(skillName);
+        if (isCustomSkill(skillName)) tile.classList.add('custom-skill');
+    }
+    
+    // Drag events (PC)
     tile.addEventListener('dragstart', (e) => {
         draggedSkill = skillName;
         tile.classList.add('dragging');
         e.dataTransfer.effectAllowed = 'move';
         e.dataTransfer.setData('text/plain', skillName);
+        
+        // Create a custom drag image (ghost)
+        const isUnassigned = tile.classList.contains('unassigned');
+        const isCustomGen = skillName === CUSTOM_SKILL_MARKER;
+        const ghostText = isCustomGen ? I18N.t('customSkillTile') : I18N.skill(skillName);
+        const ghost = createDragGhost(ghostText, isUnassigned);
+        if (isCustomGen) ghost.classList.add('custom-ghost');
+        // Position off-screen initially so the browser picks it up
+        ghost.style.left = '-9999px';
+        ghost.style.top = '-9999px';
+        e.dataTransfer.setDragImage(ghost, ghost.offsetWidth / 2, ghost.offsetHeight + 12);
+    });
+    
+    tile.addEventListener('drag', (e) => {
+        // Move the ghost to follow the cursor during drag
+        if (e.clientX > 0 && e.clientY > 0) {
+            moveDragGhost(e.clientX, e.clientY);
+        }
     });
     
     tile.addEventListener('dragend', () => {
         tile.classList.remove('dragging');
         draggedSkill = null;
+        removeDragGhost();
         // Clean up all drag-over highlights
         document.querySelectorAll('.drag-over, .invalid-drop').forEach(el => {
             el.classList.remove('drag-over', 'invalid-drop');
@@ -1238,11 +1411,25 @@ function createSkillTile(skillName) {
     tile.addEventListener('touchstart', (e) => {
         draggedSkill = skillName;
         tile.classList.add('dragging');
-        // Store the original parent for potential cancel
         tile._originalParent = tile.parentElement;
-        tile._touchOffsetX = e.touches[0].clientX - tile.getBoundingClientRect().left;
-        tile._touchOffsetY = e.touches[0].clientY - tile.getBoundingClientRect().top;
+        
+        // Create floating ghost at touch position
+        const isUnassigned = tile.classList.contains('unassigned');
+        const isCustomGen = skillName === CUSTOM_SKILL_MARKER;
+        const ghostText = isCustomGen ? I18N.t('customSkillTile') : I18N.skill(skillName);
+        const ghost = createDragGhost(ghostText, isUnassigned);
+        if (isCustomGen) ghost.classList.add('custom-ghost');
+        moveDragGhost(e.touches[0].clientX, e.touches[0].clientY);
     });
+    
+    tile.addEventListener('touchmove', (e) => {
+        if (draggedSkill) {
+            e.preventDefault();
+            const touch = e.touches[0];
+            moveDragGhost(touch.clientX, touch.clientY);
+            highlightTouchDropZone(touch.clientX, touch.clientY, '.skill-tier-drop-zone, .skill-pool');
+        }
+    }, { passive: false });
     
     return tile;
 }
@@ -1295,7 +1482,11 @@ function handleTouchEnd(e) {
     if (!draggedSkill) return;
     
     const touch = e.changedTouches[0];
+    
+    // Temporarily hide ghost so elementFromPoint can find the real element underneath
+    if (dragGhostEl) dragGhostEl.style.display = 'none';
     const dropTarget = document.elementFromPoint(touch.clientX, touch.clientY);
+    if (dragGhostEl) dragGhostEl.style.display = '';
     
     if (!dropTarget) {
         cancelTouchDrag();
@@ -1310,13 +1501,16 @@ function handleTouchEnd(e) {
     }
     
     // Clean up
+    removeDragGhost();
     document.querySelectorAll('.dragging').forEach(el => el.classList.remove('dragging'));
-    document.querySelectorAll('.drag-over').forEach(el => el.classList.remove('drag-over'));
+    document.querySelectorAll('.drag-over, .invalid-drop').forEach(el => el.classList.remove('drag-over', 'invalid-drop'));
     draggedSkill = null;
 }
 
 function cancelTouchDrag() {
+    removeDragGhost();
     document.querySelectorAll('.dragging').forEach(el => el.classList.remove('dragging'));
+    document.querySelectorAll('.drag-over, .invalid-drop').forEach(el => el.classList.remove('drag-over', 'invalid-drop'));
     draggedSkill = null;
 }
 
@@ -1324,6 +1518,29 @@ function cancelTouchDrag() {
 
 function moveSkillToZone(skillName, newRating, zone) {
     const char = getCharacter();
+    
+    // Handle custom skill creation
+    if (skillName === CUSTOM_SKILL_MARKER) {
+        // Don't allow dropping custom tile back to pool (rating 0)
+        if (newRating === 0) return;
+        
+        // Prompt for custom skill name
+        const customName = promptCustomSkillName(char.skills);
+        if (!customName) return; // User cancelled or invalid name
+        
+        // Create the custom skill with the given rating
+        char.skills[customName] = newRating;
+        
+        // Create a fresh custom tile and add it to the zone
+        const newTile = createSkillTile(customName);
+        newTile.classList.add('custom-skill');
+        zone.appendChild(newTile);
+        
+        // Update stress boxes and timestamp
+        updateStressBoxes();
+        char.updatedAt = new Date().toISOString();
+        return;
+    }
     
     // Remove the existing tile from wherever it is
     const existingTile = document.querySelector(`.skill-tile[data-skill="${skillName}"]`);
@@ -1342,6 +1559,7 @@ function moveSkillToZone(skillName, newRating, zone) {
     
     // Create a fresh tile and add it to the zone
     const newTile = createSkillTile(skillName);
+    if (isCustomSkill(skillName)) newTile.classList.add('custom-skill');
     if (newRating === 0) {
         newTile.classList.add('unassigned');
     }

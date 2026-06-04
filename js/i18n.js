@@ -126,6 +126,10 @@ const I18N = {
         editStuntsBtn: { en: '+', 'zh-TW': '+' },
         editStuntsHint: { en: 'Tap + to add or edit stunts', 'zh-TW': '點擊 + 新增或編輯特技' },
         btnSaveStunts: { en: 'Save Stunts', 'zh-TW': '儲存特技' },
+        customSkillTile: { en: '+ Custom', 'zh-TW': '+ 自訂' },
+        customSkillPrompt: { en: 'Enter custom skill name:', 'zh-TW': '輸入自訂技能名稱：' },
+        customSkillEmpty: { en: 'Skill name cannot be empty', 'zh-TW': '技能名稱不能為空' },
+        customSkillDuplicate: { en: 'A skill with that name already exists', 'zh-TW': '已存在同名技能' },
 
         // === DICE ROLLER ===
         diceTotal: { en: 'Total', 'zh-TW': '總計' },
