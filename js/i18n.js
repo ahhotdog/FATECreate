@@ -105,9 +105,9 @@ const I18N = {
         // === INFO PAGE ===
         infoTitle: { en: 'About Fate Create', 'zh-TW': '關於 Fate Create' },
         infoWhatTitle: { en: 'What is FATE Core?', 'zh-TW': '什麼是 FATE Core？' },
-        infoWhatDesc: { en: 'FATE Core is a tabletop roleplaying game system that emphasizes collaborative storytelling and character-driven narratives. Characters are defined by their aspects, skills, and stunts.', 'zh-TW': 'FATE Core 是一個桌上角色扮演遊戲系統，強調協作敘事和角色驅動的故事。角色由面向、技能和特技來定義。' },
+        infoWhatDesc: { en: 'FATE Core is a tabletop roleplaying game system that emphasizes collaborative storytelling and character-driven narratives. Characters are defined by their aspects, skills, and stunts.<br><br>Learn more at the <a href="https://fate-srd.com/fate-core" target="_blank" rel="noopener noreferrer">Fate Core System Reference Document</a>.', 'zh-TW': 'FATE Core 是一個桌上角色扮演遊戲系統，強調協作敘事和角色驅動的故事。角色由形象、技能和特技來定義。<br><br>在 <a href="https://sites.google.com/site/faterpg/core" target="_blank" rel="noopener noreferrer">Fate Core 系統參考文件</a> 了解更多。' },
         infoHowTitle: { en: 'How to Use This App', 'zh-TW': '如何使用此應用程式' },
-        infoHowDesc: { en: 'Click "NEW" to create a character. You can use Quick Setup for a guided experience, or skip to the character sheet to fill it out manually. Your characters are saved in your browser.', 'zh-TW': '點擊「新建」來創建角色。你可以使用快速設定來獲得引導體驗，或直接跳到角色表手動填寫。你的角色會儲存在瀏覽器中。' },
+        infoHowDesc: { en: `Click "NEW" to create a character. You can use Quick Setup for a guided experience, or skip to the character sheet to fill it out manually. Your characters are saved in your browser.`, 'zh-TW': '點擊「新建」來創建角色。你可以使用快速設定來獲得引導體驗，或直接跳到角色表手動填寫。你的角色會儲存在瀏覽器中。' },
         infoVersionTitle: { en: 'Version', 'zh-TW': '版本' },
         infoVersion: { en: 'Fate Create v1.0', 'zh-TW': 'Fate Create v1.0' },
         btnClose: { en: 'Close', 'zh-TW': '關閉' },
@@ -268,7 +268,7 @@ const I18N = {
             const key = el.getAttribute('data-i18n');
             const translated = this.t(key);
             if (translated !== key) {
-                el.textContent = translated;
+                el.innerHTML = translated;
             }
         });
 
