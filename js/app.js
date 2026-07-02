@@ -809,12 +809,11 @@ function displayCharacterSheet() {
         skillTiers[rating].forEach(skill => {
             const skillDiv = document.createElement('div');
             skillDiv.className = 'skill-item clickable';
-            const translatedSkill = I18N.skill(skill);
             skillDiv.innerHTML = `
-                <span class="skill-name">${translatedSkill}</span>
+                <span class="skill-name">${I18N.skill(skill)}</span>
                 <span class="skill-rating">+${rating}</span>
             `;
-            skillDiv.addEventListener('click', () => rollFateDice(skill, parseInt(rating)));
+            skillDiv.addEventListener('click', () => rollFateDice(skill, parseInt(rating))); // Pass original skill name
             tierDiv.appendChild(skillDiv);
         });
         

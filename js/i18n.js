@@ -64,7 +64,7 @@ const I18N = {
         // === SKILLS PAGE ===
         step6Title: { en: 'Step 6: Skills', 'zh-TW': '步驟六：技能' },
         skillPyramidInfo: { en: 'Skill Pyramid:', 'zh-TW': '技能金字塔：' },
-        skillPyramidDesc: { en: 'Select 1 skill at +4, 2 at +3, 3 at +2, and 4 at +1.', 'zh-TW': '選擇1個+4技能、2個+3技能、3個+2技能和4個+1技能。' },
+        skillPyramidDesc: { en: 'Select skills.', 'zh-TW': '選擇技能。' },
 
         // === STUNTS PAGE ===
         step7Title: { en: 'Step 7: Stunts', 'zh-TW': '步驟七：特技' },

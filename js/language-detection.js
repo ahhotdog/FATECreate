@@ -2,6 +2,12 @@
 // Detects user's preferred language and sets it in the I18N module.
 
 document.addEventListener('DOMContentLoaded', function() {
+    // Check if a language has already been set by the user
+    const savedLang = localStorage.getItem('fateCreate_language');
+    if (savedLang) {
+        return; // A preference is already saved, so do nothing.
+    }
+
     const userLang = navigator.language || navigator.userLanguage; // Get user's preferred language
     console.log('Detected browser language:', userLang);
 
