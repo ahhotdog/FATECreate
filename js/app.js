@@ -676,8 +676,8 @@ function createStuntCard(index) {
     card.innerHTML = `
         <div class="stunt-number">${index + 1}</div>
         ${index >= 3 ? '<button class="btn-remove-stunt" onclick="removeStuntCard(' + index + ')">&times;</button>' : ''}
-        <input type="text" class="stunt-name" placeholder="Stunt Name" data-index="${index}">
-        <textarea class="stunt-description" placeholder="Describe what this stunt does..." data-index="${index}"></textarea>
+        <input type="text" class="stunt-name" placeholder="${I18N.t('stuntNamePlaceholder')}" data-index="${index}">
+        <textarea class="stunt-description" placeholder="${I18N.t('stuntDescPlaceholder')}" data-index="${index}"></textarea>
     `;
     
     container.appendChild(card);
