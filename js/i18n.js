@@ -131,6 +131,10 @@ const I18N = {
         customSkillEmpty: { en: 'Skill name cannot be empty', 'zh-TW': '技能名稱不能為空' },
         customSkillDuplicate: { en: 'A skill with that name already exists', 'zh-TW': '已存在同名技能' },
 
+        // === PORTRAIT ===
+        portraitClose: { en: 'Close', 'zh-TW': '關閉' },
+        portraitSelect: { en: 'Select Portrait', 'zh-TW': '選擇肖像' },
+
         // === DICE ROLLER ===
         diceTotal: { en: 'Total', 'zh-TW': '總計' },
         diceClose: { en: 'Close', 'zh-TW': '關閉' },

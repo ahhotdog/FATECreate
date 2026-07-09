@@ -17,6 +17,9 @@ document.addEventListener('DOMContentLoaded', function() {
     // Set up scroll-based menu button hide/show
     setupScrollMenuButton();
     
+    // Set up portrait system
+    setupPortraitSystem();
+    
     // Apply saved language translations
     I18N.applyTranslations();
     initSettingsPage();
@@ -750,6 +753,9 @@ function displayCharacterSheet() {
     }
     document.getElementById('view-character-sheet').classList.remove('edit-mode-active');
     
+    // Portrait
+    updatePortraitDisplay(char);
+    
     // Name
     document.getElementById('character-name').value = char.name || '';
     
@@ -890,11 +896,23 @@ function displayLoadPage() {
         const date = new Date(char.updatedAt || char.createdAt);
         const dateStr = date.toLocaleDateString();
         
+        // Build portrait thumbnail HTML
+        let portraitHtml = '';
+        if (char.portrait && char.portrait.category && char.portrait.image) {
+            const portraitSrc = getPortraitPath(char.portrait.category, char.portrait.image);
+            portraitHtml = `<div class="card-portrait"><img src="${portraitSrc}" alt="Portrait" /></div>`;
+        } else {
+            portraitHtml = `<div class="card-portrait"><img src="${getPortraitPlusPath()}" alt="No portrait" style="opacity:0.4;padding:25%;" /></div>`;
+        }
+        
         card.innerHTML = `
             <div class="character-preview">
-                <h3 class="character-name">${char.name || 'Unnamed Character'}</h3>
-                <p class="character-concept">${char.aspects.highConcept || ''}</p>
-                <p class="character-date">${I18N.t('lastModified')} ${dateStr}</p>
+                ${portraitHtml}
+                <div class="card-info">
+                    <h3 class="character-name">${char.name || 'Unnamed Character'}</h3>
+                    <p class="character-concept">${char.aspects.highConcept || ''}</p>
+                    <p class="character-date">${I18N.t('lastModified')} ${dateStr}</p>
+                </div>
             </div>
             <div class="character-actions">
                 <button class="ui-button ui-button-small" onclick="loadCharacterById('${char.id}')">${I18N.t('btnLoadChar')}</button>
@@ -1663,4 +1681,182 @@ function setupStuntsPageForEdit() {
     }
     
     updateRefreshDisplay();
+}
+
+// === PORTRAIT SYSTEM ===
+
+// Update the portrait display on the character sheet
+function updatePortraitDisplay(char) {
+    const avatar = document.getElementById('portrait-avatar');
+    const img = document.getElementById('portrait-img');
+    if (!avatar || !img) return;
+    
+    if (char.portrait && char.portrait.category && char.portrait.image) {
+        img.src = getPortraitPath(char.portrait.category, char.portrait.image);
+        avatar.classList.remove('no-portrait');
+    } else {
+        img.src = getPortraitPlusPath();
+        avatar.classList.add('no-portrait');
+    }
+}
+
+// Set up the portrait system (click handler, scroll shrink, picker)
+function setupPortraitSystem() {
+    // Click portrait avatar to open picker
+    const avatar = document.getElementById('portrait-avatar');
+    if (avatar) {
+        avatar.addEventListener('click', openPortraitPicker);
+    }
+    
+    // Close button
+    const closeBtn = document.getElementById('portrait-close');
+    if (closeBtn) {
+        closeBtn.addEventListener('click', closePortraitPicker);
+    }
+    
+    // Click overlay background to close
+    const overlay = document.getElementById('portrait-picker');
+    if (overlay) {
+        overlay.addEventListener('click', (e) => {
+            if (e.target === overlay) closePortraitPicker();
+        });
+    }
+    
+    // Scroll listener for portrait shrink
+    setupPortraitScrollShrink();
+}
+
+// Open the portrait picker modal
+function openPortraitPicker() {
+    const picker = document.getElementById('portrait-picker');
+    if (!picker) return;
+    
+    picker.classList.remove('hidden');
+    
+    // Build tabs
+    const tabsContainer = document.getElementById('portrait-tabs');
+    tabsContainer.innerHTML = '';
+    
+    const lang = I18N.currentLang || 'en';
+    
+    PORTRAIT_CATEGORIES.forEach((cat, index) => {
+        const tab = document.createElement('button');
+        tab.className = 'portrait-tab' + (index === 0 ? ' active' : '');
+        tab.textContent = cat.label[lang] || cat.label.en;
+        tab.dataset.category = cat.key;
+        tab.addEventListener('click', () => {
+            // Switch active tab
+            tabsContainer.querySelectorAll('.portrait-tab').forEach(t => t.classList.remove('active'));
+            tab.classList.add('active');
+            renderPortraitGrid(cat.key);
+        });
+        tabsContainer.appendChild(tab);
+    });
+    
+    // Render first category by default
+    renderPortraitGrid(PORTRAIT_CATEGORIES[0].key);
+}
+
+// Render the portrait grid for a given category
+function renderPortraitGrid(categoryKey) {
+    const grid = document.getElementById('portrait-grid');
+    if (!grid) return;
+    grid.innerHTML = '';
+    
+    const category = PORTRAIT_CATEGORIES.find(c => c.key === categoryKey);
+    if (!category) return;
+    
+    const char = getCharacter();
+    
+    category.images.forEach(filename => {
+        const item = document.createElement('div');
+        item.className = 'portrait-grid-item';
+        
+        // Check if this is the currently selected portrait
+        if (char && char.portrait && char.portrait.category === categoryKey && char.portrait.image === filename) {
+            item.classList.add('selected');
+        }
+        
+        const img = document.createElement('img');
+        img.src = getPortraitPath(categoryKey, filename);
+        img.alt = filename.replace('.png', '');
+        img.loading = 'lazy';
+        item.appendChild(img);
+        
+        item.addEventListener('click', () => {
+            selectPortrait(categoryKey, filename);
+        });
+        
+        grid.appendChild(item);
+    });
+}
+
+// Select a portrait
+function selectPortrait(categoryKey, filename) {
+    const char = getCharacter();
+    if (!char) return;
+    
+    char.portrait = { category: categoryKey, image: filename };
+    char.updatedAt = new Date().toISOString();
+    
+    // Update the character sheet display
+    updatePortraitDisplay(char);
+    
+    // Update selected state in grid
+    const grid = document.getElementById('portrait-grid');
+    if (grid) {
+        grid.querySelectorAll('.portrait-grid-item').forEach(item => item.classList.remove('selected'));
+        // Find and highlight the selected one
+        const items = grid.querySelectorAll('.portrait-grid-item');
+        items.forEach(item => {
+            const img = item.querySelector('img');
+            if (img && img.src.includes(filename)) {
+                item.classList.add('selected');
+            }
+        });
+    }
+    
+    // Close the picker after selection
+    closePortraitPicker();
+}
+
+// Close the portrait picker modal
+function closePortraitPicker() {
+    const picker = document.getElementById('portrait-picker');
+    if (picker) {
+        picker.classList.add('hidden');
+    }
+}
+
+// Scroll listener: shrink portrait when user scrolls down
+function setupPortraitScrollShrink() {
+    const sheetView = document.getElementById('view-character-sheet');
+    if (!sheetView) return;
+    
+    let ticking = false;
+    
+    window.addEventListener('scroll', () => {
+        if (!ticking) {
+            window.requestAnimationFrame(() => {
+                const header = document.getElementById('portrait-header');
+                if (!header) { ticking = false; return; }
+                
+                // Only apply shrink when character sheet is visible
+                if (sheetView.classList.contains('hidden')) {
+                    ticking = false;
+                    return;
+                }
+                
+                const scrollY = window.scrollY || window.pageYOffset;
+                if (scrollY > 80) {
+                    header.classList.add('shrunk');
+                } else {
+                    header.classList.remove('shrunk');
+                }
+                
+                ticking = false;
+            });
+            ticking = true;
+        }
+    });
 }

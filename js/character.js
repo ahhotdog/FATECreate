@@ -9,6 +9,7 @@ function createNewCharacter() {
     currentCharacter = {
         id: null,
         name: "",
+        portrait: null, // e.g. { category: 'noir', image: 'cop.png' }
         aspects: {
             highConcept: "",
             trouble: "",
