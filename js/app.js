@@ -94,6 +94,8 @@ function setupEventListeners() {
     document.getElementById('btn-back-settings').addEventListener('click', () => goToHome(true));
     document.getElementById('lang-en').addEventListener('click', () => selectLanguage('en'));
     document.getElementById('lang-zh-TW').addEventListener('click', () => selectLanguage('zh-TW'));
+    document.getElementById('lang-de').addEventListener('click', () => selectLanguage('de'));
+    document.getElementById('lang-ja').addEventListener('click', () => selectLanguage('ja'));
     
     // === DICE ROLLER ===
     document.getElementById('dice-close').addEventListener('click', closeDiceModal);
