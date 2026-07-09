@@ -109,7 +109,7 @@ const I18N = {
         infoHowTitle: { en: 'How to Use This App', 'zh-TW': '如何使用此應用程式' },
         infoHowDesc: { en: `Click "NEW" to create a character. You can use Quick Setup for a guided experience, or skip to the character sheet to fill it out manually. Your characters are saved in your browser.`, 'zh-TW': '點擊「新建」來創建角色。你可以使用快速設定來獲得引導體驗，或直接跳到角色表手動填寫。你的角色會儲存在瀏覽器中。' },
         infoVersionTitle: { en: 'Version', 'zh-TW': '版本' },
-        infoVersion: { en: 'Fate Create v1.0', 'zh-TW': 'Fate Create v1.0' },
+        infoVersion: { en: 'Fate Create v1.2 Added portraits feature.', 'zh-TW': 'Fate Create v1.2 新增了肖像功能。' },
         btnClose: { en: 'Close', 'zh-TW': '關閉' },
 
         // === SETTINGS PAGE ===
