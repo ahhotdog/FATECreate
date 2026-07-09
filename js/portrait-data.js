@@ -22,7 +22,7 @@ const PORTRAIT_CATEGORIES = [
     },
     {
         key: 'noir',
-        label: { en: 'Noir', 'zh-TW': '黑色' },
+        label: { en: 'Noir', 'zh-TW': '老警探' },
         images: [
             'cop.png', 'dick.png', 'doc.png', 'femme.png',
             'henchmen.png', 'hobo.png', 'jazz.png', 'journalist.png',
