@@ -110,6 +110,7 @@ const I18N = {
         infoHowDesc: { en: `Click "NEW" to create a character. You can use Quick Setup for a guided experience, or skip to the character sheet to fill it out manually. Your characters are saved in your browser.`, 'zh-TW': '點擊「新建」來創建角色。你可以使用快速設定來獲得引導體驗，或直接跳到角色表手動填寫。你的角色會儲存在瀏覽器中。', de: 'Klicken Sie auf „NEU", um einen Charakter zu erstellen. Sie können die schnelle Einrichtung für eine geführte Erfahrung verwenden oder direkt zum Charakterblatt springen, um es manuell auszufüllen. Ihre Charaktere werden in Ihrem Browser gespeichert.', ja: '「新規」をクリックしてキャラクターを作成します。ガイド付きの体験にはクイックセットアップを使用するか、キャラクターシートにスキップして手動で入力できます。キャラクターはブラウザに保存されます。' },
         infoVersionTitle: { en: 'Version', 'zh-TW': '版本', de: 'Version', ja: 'バージョン' },
         infoVersion: { en: 'Fate Create v1.2 Added portraits feature.', 'zh-TW': 'Fate Create v1.2 新增了肖像功能。', de: 'Fate Create v1.2 Porträtfunktion hinzugefügt.', ja: 'Fate Create v1.2 ポートレート機能を追加しました。' },
+        infoDiscordDesc: { en: 'Join my discord server and give me some feedbacks! Or just hang out and chat about TTRPGs and FATE Core.', 'zh-TW': '加入我的 Discord 伺服器，給我一些回饋！或者只是閒聊關於 TRPG 和 FATE Core。', de: 'Treten Sie meinem Discord-Server bei und geben Sie mir Feedback! Oder einfach nur abhängen und über TTRPGs und FATE Core plaudern.', ja: '私のDiscordサーバーに参加して、フィードバックをください！または、TTRPGやFATE Coreについてチャットするだけでも構いません。' },
         btnClose: { en: 'Close', 'zh-TW': '關閉', de: 'Schließen', ja: '閉じる' },
 
         // === SETTINGS PAGE ===
