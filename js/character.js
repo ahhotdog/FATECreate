@@ -8,6 +8,8 @@ let currentCharacter = null;
 function createNewCharacter() {
     currentCharacter = {
         id: null,
+        // Keep generated character content tied to the language selected by the player.
+        language: I18N.currentLang,
         name: "",
         portrait: null, // e.g. { category: 'noir', image: 'cop.png' }
         aspects: {
@@ -67,7 +69,13 @@ function updateCharacter(path, value) {
 
 // Load an existing character
 function loadCharacterData(characterData) {
+    // Older saved characters predate language support; use the player's current
+    // selection until they are saved again.
+    if (!characterData.language) characterData.language = I18N.currentLang;
     currentCharacter = characterData;
+    if (I18N.currentLang !== currentCharacter.language) {
+        I18N.setLanguage(currentCharacter.language);
+    }
     return currentCharacter;
 }
 

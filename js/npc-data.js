@@ -1,4 +1,6 @@
-{
+// Generated from data/npcRandomizer.json. Refresh with: node scripts/build-npc-data.js
+// A classic script can load from file://, where fetching JSON is blocked.
+const NPC_BUNDLED_IDEAS = {
   "en": {
     "modern_fantasy": {
       "high_concepts": [
@@ -1879,4 +1881,4 @@
       ]
     }
   }
-}
+};

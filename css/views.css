@@ -484,6 +484,103 @@
     margin-bottom: var(--spacing-xl);
 }
 
+/* ===== NPC GENERATOR ===== */
+
+.ui-button-npc {
+    background-color: #5f8dab;
+}
+
+.npc-theme-dialog .select-field {
+    width: 100%;
+}
+
+#view-character-sheet > .button-group .ui-button {
+    min-width: 0;
+    padding: 12px 16px;
+    font-size: 0.95rem;
+}
+
+#view-npc-generator {
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+#view-npc-generator > h2,
+#view-npc-generator > .help-text {
+    text-align: center;
+}
+
+.npc-generator-card {
+    text-align: center;
+}
+
+.npc-generator-card .select-field {
+    width: 100%;
+}
+
+.npc-result {
+    background: white;
+    border: 3px solid var(--btn-blue);
+    border-radius: var(--radius-xl);
+    padding: var(--spacing-lg);
+    box-shadow: var(--shadow-md);
+    margin: var(--spacing-xl) 0;
+    animation: fadeIn var(--transition-normal);
+}
+
+.npc-result-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--spacing-sm);
+    padding-bottom: var(--spacing-md);
+    margin-bottom: var(--spacing-md);
+    border-bottom: 2px solid var(--border-color);
+}
+
+.npc-result-kicker {
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    color: var(--btn-blue);
+}
+
+.npc-theme-badge {
+    background: var(--card-bg);
+    border-radius: var(--radius-lg);
+    color: var(--text-light);
+    font-size: 0.8rem;
+    font-weight: 700;
+    padding: 4px 10px;
+    text-transform: uppercase;
+}
+
+.npc-detail {
+    padding: var(--spacing-md);
+    margin-bottom: var(--spacing-sm);
+    border-radius: var(--radius-md);
+    background: var(--card-bg);
+}
+
+.npc-detail h3 {
+    color: var(--btn-blue);
+    font-size: 0.9rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+}
+
+.npc-detail p {
+    margin: 0;
+    color: var(--text-dark);
+    font-size: 1.08rem;
+    font-style: italic;
+}
+
+.npc-result .ui-button {
+    display: block;
+    margin: var(--spacing-lg) auto 0;
+}
+
 /* ===== INFO PAGE ===== */
 
 #view-info {

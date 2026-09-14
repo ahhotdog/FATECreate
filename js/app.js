@@ -1058,6 +1058,13 @@ function initSettingsPage() {
 // Select a language and apply translations
 function selectLanguage(lang) {
     I18N.setLanguage(lang);
+
+    // A character's generated text and the interface must use the same language.
+    const character = getCharacter();
+    if (character) {
+        character.language = lang;
+        character.updatedAt = new Date().toISOString();
+    }
     
     // Update active state on buttons
     initSettingsPage();

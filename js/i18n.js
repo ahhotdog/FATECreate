@@ -17,6 +17,7 @@ const I18N = {
         // === MENU ===
         menuNew: { en: 'NEW', 'zh-TW': '創角', de: 'NEU', ja: '新規' },
         menuLoad: { en: 'LOAD', 'zh-TW': '讀取', de: 'LADEN', ja: '読込' },
+        menuNpc: { en: 'NPC GENERATOR', 'zh-TW': 'NPC 產生器', de: 'NPC-GENERATOR', ja: 'NPCジェネレーター' },
         menuInfo: { en: 'INFO', 'zh-TW': '資訊', de: 'INFO', ja: '情報' },
         menuSetting: { en: 'SETTING', 'zh-TW': '設定', de: 'EINSTELLUNG', ja: '設定' },
 
@@ -101,6 +102,25 @@ const I18N = {
         btnDeleteChar: { en: 'Delete', 'zh-TW': '刪除', de: 'Löschen', ja: '削除' },
         noCharacters: { en: 'No saved characters yet.', 'zh-TW': '尚無已儲存的角色。', de: 'Noch keine gespeicherten Charaktere.', ja: 'まだ保存されたキャラクターはありません。' },
         lastModified: { en: 'Last modified:', 'zh-TW': '最後修改：', de: 'Zuletzt geändert:', ja: '最後に変更：' },
+
+        // === NPC GENERATOR ===
+        npcFillDescription: { en: 'Choose a theme to replace the five aspects on this character sheet.', 'zh-TW': '選擇主題，產生並替換這張角色卡的五個形象。', de: 'Wähle ein Thema, um die fünf Aspekte dieses Charakterblatts zu ersetzen.', ja: 'テーマを選んで、このキャラクターシートの5つのアスペクトを置き換えます。' },
+        npcChooseTheme: { en: 'Choose a theme…', 'zh-TW': '選擇主題…', de: 'Thema wählen…', ja: 'テーマを選択…' },
+        npcTitle: { en: 'NPC Generator', 'zh-TW': 'NPC 產生器', de: 'NPC-Generator', ja: 'NPCジェネレーター' },
+        npcDescription: { en: 'Create a ready-to-use NPC spark for your next scene.', 'zh-TW': '為下一個場景快速產生可直接使用的 NPC 靈感。', de: 'Erstelle einen sofort einsetzbaren NPC-Impuls für deine nächste Szene.', ja: '次のシーンですぐ使えるNPCのひらめきを作ります。' },
+        npcThemeLabel: { en: 'Campaign Theme', 'zh-TW': '戰役主題', de: 'Kampagnenthema', ja: 'キャンペーンテーマ' },
+        npcThemeModernFantasy: { en: 'Modern Fantasy', 'zh-TW': '現代奇幻', de: 'Moderne Fantasy', ja: '現代ファンタジー' },
+        npcThemeFantasy: { en: 'Fantasy', 'zh-TW': '奇幻', de: 'Fantasy', ja: 'ファンタジー' },
+        npcThemeScifi: { en: 'Sci-Fi', 'zh-TW': '科幻', de: 'Science-Fiction', ja: 'SF' },
+        npcThemeCyberpunk: { en: 'Cyberpunk', 'zh-TW': '賽博龐克', de: 'Cyberpunk', ja: 'サイバーパンク' },
+        npcThemeMythos: { en: 'Mythos', 'zh-TW': '克蘇魯', de: 'Mythos', ja: '神話' },
+        btnGenerateNpc: { en: 'Generate NPC', 'zh-TW': '產生 NPC', de: 'NPC erstellen', ja: 'NPCを生成' },
+        btnRerollNpc: { en: 'Reroll', 'zh-TW': '重新產生', de: 'Neu würfeln', ja: '再ロール' },
+        npcReady: { en: 'GM QUICK NPC', 'zh-TW': 'GM 快速 NPC', de: 'SCHNELLER GM-NPC', ja: 'GMクイックNPC' },
+        npcHighConcept: { en: 'High Concept', 'zh-TW': '高概念', de: 'Hochkonzept', ja: 'ハイコンセプト' },
+        npcTrouble: { en: 'Trouble', 'zh-TW': '麻煩', de: 'Schwierigkeit', ja: 'トラブル' },
+        npcAspect: { en: 'Notable Aspect', 'zh-TW': '顯著形象', de: 'Prägender Aspekt', ja: '注目すべきアスペクト' },
+        npcLoadError: { en: 'NPC ideas could not be loaded. Please refresh and try again.', 'zh-TW': '無法載入 NPC 靈感。請重新整理後再試一次。', de: 'NPC-Ideen konnten nicht geladen werden. Bitte aktualisieren und erneut versuchen.', ja: 'NPC案を読み込めませんでした。更新してもう一度お試しください。' },
 
         // === INFO PAGE ===
         infoTitle: { en: 'About Fate Create', 'zh-TW': '關於 Fate Create', de: 'Über Fate Create', ja: 'Fate Createについて' },

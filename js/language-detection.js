@@ -12,11 +12,11 @@ document.addEventListener('DOMContentLoaded', function() {
     console.log('Detected browser language:', userLang);
 
     // Check if the detected language is supported
-    const supportedLangs = ['en', 'zh-TW']; // List of languages your app supports
-    const langCode = userLang.split('-')[0]; // Get the primary language code (e.g., 'en' from 'en-US')
+    const supportedLangs = ['en', 'zh-TW', 'de', 'ja'];
+    const matchedLang = supportedLangs.find(lang => userLang === lang || userLang.startsWith(lang + '-'));
 
-    if (supportedLangs.includes(langCode)) {
-        I18N.setLanguage(langCode);
+    if (matchedLang) {
+        I18N.setLanguage(matchedLang);
         console.log('Setting language to:', langCode);
     } else {
         I18N.setLanguage('en'); // Default to English if language is not supported
