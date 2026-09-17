@@ -795,6 +795,42 @@ function displayCharacterSheet() {
         aspectsDisplay.appendChild(aspectDiv);
     });
     
+    renderSheetSkills();
+
+    // Stunts
+    const stuntsDisplay = document.getElementById('stunts-display');
+    stuntsDisplay.innerHTML = '';
+
+    // Keep empty cards out of character data so they do not consume refresh.
+    const displayedStunts = char.stunts.length ? char.stunts : Array(FREE_STUNTS).fill(null);
+    displayedStunts.forEach(stunt => {
+        const stuntDiv = document.createElement('div');
+        stuntDiv.className = 'stunt-display';
+        stuntDiv.innerHTML = `
+            <div class="stunt-display-name">${stunt ? stunt.name : '—'}</div>
+            <div class="stunt-display-description">${stunt ? stunt.description : ''}</div>
+        `;
+        stuntsDisplay.appendChild(stuntDiv);
+    });
+
+    // Stress boxes
+    displayStressBoxes('physical-stress', char.stress.physical);
+    displayStressBoxes('mental-stress', char.stress.mental);
+
+    // Consequences
+    document.getElementById('consequence-mild').value = char.consequences.mild.aspect || '';
+    document.getElementById('consequence-moderate').value = char.consequences.moderate.aspect || '';
+    document.getElementById('consequence-severe').value = char.consequences.severe.aspect || '';
+
+    // Notes
+    document.getElementById('character-notes').value = char.notes || '';
+
+    // Refresh
+    document.getElementById('sheet-refresh-value').textContent = char.refresh;
+}
+
+function renderSheetSkills() {
+    const char = getCharacter();
     // Skills — grouped by rating tier in a 2-column grid
     const skillsDisplay = document.getElementById('skills-display');
     skillsDisplay.innerHTML = '';
@@ -807,6 +843,13 @@ function displayCharacterSheet() {
         if (!skillTiers[rating]) skillTiers[rating] = [];
         skillTiers[rating].push(skill);
     });
+
+    // Blank slots are display placeholders, not assigned character skills.
+    if (sortedSkills.length === 0) {
+        Object.values(SKILL_PYRAMID).forEach(({ rating, slots }) => {
+            skillTiers[rating] = Array(slots).fill(null);
+        });
+    }
     
     // Render each tier group (highest first)
     const tierKeys = Object.keys(skillTiers).sort((a, b) => b - a);
@@ -816,46 +859,19 @@ function displayCharacterSheet() {
         
         skillTiers[rating].forEach(skill => {
             const skillDiv = document.createElement('div');
-            skillDiv.className = 'skill-item clickable';
+            skillDiv.className = skill ? 'skill-item clickable' : 'skill-item';
             skillDiv.innerHTML = `
-                <span class="skill-name">${I18N.skill(skill)}</span>
+                <span class="skill-name">${skill ? I18N.skill(skill) : '—'}</span>
                 <span class="skill-rating">+${rating}</span>
             `;
-            skillDiv.addEventListener('click', () => rollFateDice(skill, parseInt(rating))); // Pass original skill name
+            if (skill) {
+                skillDiv.addEventListener('click', () => rollFateDice(skill, parseInt(rating))); // Pass original skill name
+            }
             tierDiv.appendChild(skillDiv);
         });
         
         skillsDisplay.appendChild(tierDiv);
     });
-    
-    // Stunts
-    const stuntsDisplay = document.getElementById('stunts-display');
-    stuntsDisplay.innerHTML = '';
-    
-    char.stunts.forEach(stunt => {
-        const stuntDiv = document.createElement('div');
-        stuntDiv.className = 'stunt-display';
-        stuntDiv.innerHTML = `
-            <div class="stunt-display-name">${stunt.name}</div>
-            <div class="stunt-display-description">${stunt.description}</div>
-        `;
-        stuntsDisplay.appendChild(stuntDiv);
-    });
-    
-    // Stress boxes
-    displayStressBoxes('physical-stress', char.stress.physical);
-    displayStressBoxes('mental-stress', char.stress.mental);
-    
-    // Consequences
-    document.getElementById('consequence-mild').value = char.consequences.mild.aspect || '';
-    document.getElementById('consequence-moderate').value = char.consequences.moderate.aspect || '';
-    document.getElementById('consequence-severe').value = char.consequences.severe.aspect || '';
-    
-    // Notes
-    document.getElementById('character-notes').value = char.notes || '';
-    
-    // Refresh
-    document.getElementById('sheet-refresh-value').textContent = char.refresh;
 }
 
 function displayStressBoxes(containerId, count) {

@@ -104,7 +104,7 @@ const I18N = {
         lastModified: { en: 'Last modified:', 'zh-TW': '最後修改：', de: 'Zuletzt geändert:', ja: '最後に変更：' },
 
         // === NPC GENERATOR ===
-        npcFillDescription: { en: 'Choose a theme to replace the five aspects on this character sheet.', 'zh-TW': '選擇主題，產生並替換這張角色卡的五個形象。', de: 'Wähle ein Thema, um die fünf Aspekte dieses Charakterblatts zu ersetzen.', ja: 'テーマを選んで、このキャラクターシートの5つのアスペクトを置き換えます。' },
+        npcFillDescription: { en: 'Choose a theme to replace the five aspects and randomly assign ten skills: one +4, two +3, three +2, and four +1.', 'zh-TW': '選擇主題以替換五個形象，並隨機分配十項技能：一項 +4、兩項 +3、三項 +2、四項 +1。', de: 'Wähle ein Thema, um die fünf Aspekte zu ersetzen und zehn Fertigkeiten zufällig zuzuweisen: eine +4, zwei +3, drei +2 und vier +1.', ja: 'テーマを選んで5つのアスペクトを置き換え、10個の技能をランダムに割り当てます：+4を1個、+3を2個、+2を3個、+1を4個。' },
         npcChooseTheme: { en: 'Choose a theme…', 'zh-TW': '選擇主題…', de: 'Thema wählen…', ja: 'テーマを選択…' },
         npcTitle: { en: 'NPC Generator', 'zh-TW': 'NPC 產生器', de: 'NPC-Generator', ja: 'NPCジェネレーター' },
         npcDescription: { en: 'Create a ready-to-use NPC spark for your next scene.', 'zh-TW': '為下一個場景快速產生可直接使用的 NPC 靈感。', de: 'Erstelle einen sofort einsetzbaren NPC-Impuls für deine nächste Szene.', ja: '次のシーンですぐ使えるNPCのひらめきを作ります。' },

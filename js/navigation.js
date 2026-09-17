@@ -202,5 +202,6 @@ function startQuickSetup() {
 }
 
 function skipQuickSetup() {
+    displayCharacterSheet();
     navigateTo('view-character-sheet');
 }

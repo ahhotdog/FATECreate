@@ -1,4 +1,4 @@
-// Fill the current character's aspects from the selected theme.
+// Fill themed aspects and a random skill pyramid on the current character.
 let npcIdeas = null;
 let npcGenerating = false;
 
@@ -42,6 +42,18 @@ function buildNpcAspects(entries) {
     };
 }
 
+function buildNpcSkills() {
+    const pool = [...FATE_SKILLS];
+    const skills = {};
+    Object.values(SKILL_PYRAMID).forEach(({ rating, slots }) => {
+        for (let i = 0; i < slots; i++) {
+            const [skill] = pool.splice(Math.floor(Math.random() * pool.length), 1);
+            skills[skill] = rating;
+        }
+    });
+    return skills;
+}
+
 function closeNpcDialog() {
     if (npcGenerating) return;
     hideModal('npc-theme-dialog');
@@ -67,10 +79,13 @@ async function generateNpc() {
         const language = character.language || I18N.currentLang;
         const localizedThemes = ideas[language] || ideas.en;
         const aspects = buildNpcAspects(localizedThemes?.[theme]);
+        const skills = buildNpcSkills();
         if (getCharacter() !== character) throw new Error('Character changed');
         Object.assign(character.aspects, aspects);
+        character.skills = skills;
+        updateStressBoxes();
         character.updatedAt = new Date().toISOString();
-        // Update only aspects to preserve stress checkboxes and other sheet inputs.
+        // Update generated sections without resetting other sheet inputs or edit mode.
         if (editModeActive) {
             document.querySelectorAll('#aspects-display .aspect-edit-input').forEach(input => {
                 input.value = aspects[input.dataset.aspectKey];
@@ -79,6 +94,16 @@ async function generateNpc() {
             const keys = ['highConcept', 'trouble', 'phaseOne', 'phaseTwo', 'phaseThree'];
             document.querySelectorAll('#aspects-display .aspect-value').forEach((el, index) => {
                 el.textContent = aspects[keys[index]];
+            });
+        }
+        if (editModeActive) renderDraggableSkills();
+        else renderSheetSkills();
+        for (const track of ['physical', 'mental']) {
+            const container = document.getElementById(`${track}-stress`);
+            const checked = [...container.querySelectorAll('input')].map(input => input.checked);
+            displayStressBoxes(`${track}-stress`, character.stress[track]);
+            container.querySelectorAll('input').forEach((input, index) => {
+                input.checked = checked[index] || false;
             });
         }
         success = true;
