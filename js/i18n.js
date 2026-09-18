@@ -82,6 +82,7 @@ const I18N = {
         coreAspects: { en: 'CORE ASPECTS', 'zh-TW': '核心形象', de: 'KERNASPEKTE', ja: 'コアアスペクト' },
         secondaryAspects: { en: 'SECONDARY ASPECTS', 'zh-TW': '次要形象', de: 'SEKUNDÄRE ASPEKTE', ja: 'セカンダリアスペクト' },
         skillsTitle: { en: 'Skills', 'zh-TW': '技能', de: 'Fähigkeiten', ja: 'スキル' },
+        skillsRollHint: { en: 'Click Skills to Roll!', 'zh-TW': '點擊技能來擲骰！', de: 'Klicke auf Fähigkeiten, um zu würfeln!', ja: 'スキルをクリックしてロール！' },
         stuntsTitle: { en: 'Stunts', 'zh-TW': '特技', de: 'Stunts', ja: 'スタント' },
         stressTitle: { en: 'Stress & Consequences', 'zh-TW': '壓力與後果', de: 'Stress & Konsequenzen', ja: 'ストレス＆結果' },
         physicalStress: { en: 'Physical Stress', 'zh-TW': '體力壓力', de: 'Physischer Stress', ja: '肉体ストレス' },

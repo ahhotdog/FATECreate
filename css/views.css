@@ -484,6 +484,13 @@
     margin-bottom: var(--spacing-xl);
 }
 
+.skills-roll-hint {
+    margin-left: var(--spacing-sm);
+    font-size: 0.85rem;
+    font-weight: 500;
+    text-transform: none;
+}
+
 /* ===== NPC GENERATOR ===== */
 
 .ui-button-npc {
