@@ -916,8 +916,8 @@ function displayLoadPage() {
         
         // Build portrait thumbnail HTML
         let portraitHtml = '';
-        if (char.portrait && char.portrait.category && char.portrait.image) {
-            const portraitSrc = getPortraitPath(char.portrait.category, char.portrait.image);
+        const portraitSrc = getCharacterPortraitSource(char.portrait);
+        if (portraitSrc) {
             portraitHtml = `<div class="card-portrait"><img src="${portraitSrc}" alt="Portrait" /></div>`;
         } else {
             portraitHtml = `<div class="card-portrait"><img src="${getPortraitPlusPath()}" alt="No portrait" style="opacity:0.4;padding:25%;" /></div>`;
@@ -1716,8 +1716,9 @@ function updatePortraitDisplay(char) {
     const img = document.getElementById('portrait-img');
     if (!avatar || !img) return;
     
-    if (char.portrait && char.portrait.category && char.portrait.image) {
-        img.src = getPortraitPath(char.portrait.category, char.portrait.image);
+    const portraitSrc = getCharacterPortraitSource(char.portrait);
+    if (portraitSrc) {
+        img.src = portraitSrc;
         avatar.classList.remove('no-portrait');
     } else {
         img.src = getPortraitPlusPath();
@@ -1727,6 +1728,8 @@ function updatePortraitDisplay(char) {
 
 // Set up the portrait system (click handler, scroll shrink, picker)
 function setupPortraitSystem() {
+    const upload = document.getElementById('portrait-upload');
+    if (upload) upload.addEventListener('change', handlePortraitUpload);
     // Click portrait avatar to open picker
     const avatar = document.getElementById('portrait-avatar');
     if (avatar) {
@@ -1793,6 +1796,26 @@ function renderPortraitGrid(categoryKey) {
     
     const char = getCharacter();
     
+    const uploadButton = document.createElement('button');
+    uploadButton.type = 'button';
+    uploadButton.className = 'portrait-grid-item portrait-upload-button';
+    uploadButton.textContent = '+';
+    uploadButton.title = I18N.t('portraitUpload');
+    uploadButton.setAttribute('aria-label', I18N.t('portraitUpload'));
+    uploadButton.disabled = document.getElementById('portrait-upload').disabled;
+    uploadButton.addEventListener('click', () => document.getElementById('portrait-upload').click());
+    grid.appendChild(uploadButton);
+
+    if (char && char.portrait && char.portrait.type === 'custom' && getCharacterPortraitSource(char.portrait)) {
+        const current = document.createElement('div');
+        current.className = 'portrait-grid-item selected';
+        const img = document.createElement('img');
+        img.src = getCharacterPortraitSource(char.portrait);
+        img.alt = I18N.t('portraitCustom');
+        current.appendChild(img);
+        grid.appendChild(current);
+    }
+
     category.images.forEach(filename => {
         const item = document.createElement('div');
         item.className = 'portrait-grid-item';
@@ -1814,6 +1837,33 @@ function renderPortraitGrid(categoryKey) {
         
         grid.appendChild(item);
     });
+}
+
+async function handlePortraitUpload(event) {
+    const input = event.target;
+    const file = input.files[0];
+    const char = getCharacter();
+    const previousPortrait = char && char.portrait;
+    input.value = ''; // Allow selecting the same file again, including after an error.
+    if (!file || !char || input.disabled) return;
+    input.disabled = true;
+    const button = document.querySelector('.portrait-upload-button');
+    if (button) button.disabled = true;
+    try {
+        const portrait = await prepareCustomPortrait(file);
+        // A file may finish decoding after the user switches characters.
+        if (getCharacter() !== char || char.portrait !== previousPortrait) return;
+        char.portrait = portrait;
+        char.updatedAt = new Date().toISOString();
+        updatePortraitDisplay(char);
+        closePortraitPicker();
+    } catch (error) {
+        showToast(I18N.t(error.message === 'portraitFileType' ? 'portraitFileType' : 'portraitFileError'), 'error');
+    } finally {
+        input.disabled = false;
+        const currentButton = document.querySelector('.portrait-upload-button');
+        if (currentButton) currentButton.disabled = false;
+    }
 }
 
 // Select a portrait

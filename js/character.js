@@ -11,7 +11,7 @@ function createNewCharacter() {
         // Keep generated character content tied to the language selected by the player.
         language: I18N.currentLang,
         name: "",
-        portrait: null, // e.g. { category: 'noir', image: 'cop.png' }
+        portrait: null, // Built-in { category, image } or local { type: 'custom', dataUrl }
         aspects: {
             highConcept: "",
             trouble: "",

@@ -58,3 +58,46 @@ function getPortraitPath(categoryKey, filename) {
 function getPortraitPlusPath() {
     return 'assets/protraits/plus.png';
 }
+
+// Only accept embedded raster images or known built-in portraits when rendering.
+function getCharacterPortraitSource(portrait) {
+    if (!portrait) return null;
+    if (portrait.type === 'custom') {
+        return typeof portrait.dataUrl === 'string' &&
+            /^data:image\/(?:png|jpeg);base64,[A-Za-z0-9+/]+={0,2}$/.test(portrait.dataUrl)
+            ? portrait.dataUrl : null;
+    }
+    const category = PORTRAIT_CATEGORIES.find(c => c.key === portrait.category);
+    return category && category.images.includes(portrait.image)
+        ? getPortraitPath(portrait.category, portrait.image) : null;
+}
+
+// Decode, center-crop, and resize entirely on the user's device.
+async function prepareCustomPortrait(file) {
+    const bytes = new Uint8Array(await file.slice(0, 8).arrayBuffer());
+    const isPng = [137, 80, 78, 71, 13, 10, 26, 10].every((b, i) => bytes[i] === b);
+    const isJpeg = bytes[0] === 255 && bytes[1] === 216 && bytes[2] === 255;
+    if (!isPng && !isJpeg) throw new Error('portraitFileType');
+
+    const url = URL.createObjectURL(file);
+    try {
+        const img = new Image();
+        await new Promise((resolve, reject) => {
+            img.onload = resolve;
+            img.onerror = () => reject(new Error('portraitFileError'));
+            img.src = url;
+        });
+        const size = Math.min(img.naturalWidth, img.naturalHeight);
+        if (!size) throw new Error('portraitFileError');
+        const canvas = document.createElement('canvas');
+        canvas.width = canvas.height = 320;
+        const context = canvas.getContext('2d');
+        context.imageSmoothingEnabled = true;
+        context.imageSmoothingQuality = 'high';
+        context.drawImage(img, (img.naturalWidth - size) / 2,
+            (img.naturalHeight - size) / 2, size, size, 0, 0, 320, 320);
+        return { type: 'custom', dataUrl: canvas.toDataURL(isPng ? 'image/png' : 'image/jpeg', 0.85) };
+    } finally {
+        URL.revokeObjectURL(url);
+    }
+}

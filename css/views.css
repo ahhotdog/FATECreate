@@ -1132,6 +1132,30 @@
     border-radius: 50%;
 }
 
+.portrait-upload-button {
+    padding: 0;
+    color: var(--btn-blue);
+    font: inherit;
+    font-size: 4rem;
+    line-height: 1;
+}
+
+.portrait-upload-button:focus-visible {
+    outline: 3px solid var(--btn-blue-hover);
+    outline-offset: 3px;
+}
+
+.portrait-upload-button:disabled {
+    opacity: 0.5;
+    cursor: wait;
+}
+
+.portrait-upload-hint {
+    margin: var(--spacing-sm);
+    font-size: 0.85rem;
+    text-align: center;
+}
+
 .portrait-grid-item:hover {
     transform: scale(1.08);
     border-color: var(--btn-blue-hover);

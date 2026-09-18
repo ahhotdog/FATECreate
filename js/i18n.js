@@ -153,6 +153,11 @@ const I18N = {
         customSkillDuplicate: { en: 'A skill with that name already exists', 'zh-TW': '已存在同名技能', de: 'Eine Fähigkeit mit diesem Namen existiert bereits', ja: 'その名前のスキルは既に存在します' },
 
         // === PORTRAIT ===
+        portraitUpload: { en: 'Add your own portrait', 'zh-TW': '新增自己的肖像', de: 'Eigenes Porträt hinzufügen', ja: '自分の画像を追加' },
+        portraitCustom: { en: 'Your custom portrait', 'zh-TW': '你的自訂肖像', de: 'Dein eigenes Porträt', ja: 'カスタムポートレート' },
+        portraitUploadHint: { en: 'JPG or PNG. Automatically center-cropped. Save your character to keep the portrait in this browser.', 'zh-TW': 'JPG 或 PNG，會自動從中央裁切。儲存角色即可將肖像保留在此瀏覽器中。', de: 'JPG oder PNG. Wird automatisch mittig zugeschnitten. Speichere deinen Charakter, um das Porträt in diesem Browser zu behalten.', ja: 'JPG または PNG。中央で自動的に切り抜きます。キャラクターを保存すると、このブラウザーに画像が保存されます。' },
+        portraitFileType: { en: 'Please choose a JPG or PNG image.', 'zh-TW': '請選擇 JPG 或 PNG 圖片。', de: 'Bitte wähle ein JPG- oder PNG-Bild.', ja: 'JPG または PNG 画像を選択してください。' },
+        portraitFileError: { en: 'This image could not be opened. Please try another JPG or PNG.', 'zh-TW': '無法開啟此圖片，請嘗試其他 JPG 或 PNG 圖片。', de: 'Dieses Bild konnte nicht geöffnet werden. Bitte versuche ein anderes JPG oder PNG.', ja: '画像を開けませんでした。別の JPG または PNG をお試しください。' },
         portraitClose: { en: 'Close', 'zh-TW': '關閉', de: 'Schließen', ja: '閉じる' },
         portraitSelect: { en: 'Select Portrait', 'zh-TW': '選擇肖像', de: 'Porträt auswählen', ja: 'ポートレート選択' },
 

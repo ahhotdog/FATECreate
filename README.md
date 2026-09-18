@@ -52,6 +52,7 @@ The wizard guides you through:
 - Edit name, notes, and consequences
 - Track stress (physical and mental)
 - Save your character for later
+- Click the portrait, then the first **+** slot to choose a local JPG or PNG. Images are automatically center-cropped and resized to 320 × 320 pixels to fit the portrait circle. Save the character to keep its portrait in this browser; character exports also include the portrait. Images are processed on your device and are never uploaded. Clearing browser data removes saved characters and their portraits.
 
 ### Loading Characters
 
