@@ -10,6 +10,10 @@ const languages = ['zh-TW', 'de', 'ja'];
 const targetCodes = { 'zh-TW': 'zh-TW', de: 'de', ja: 'ja' };
 const separator = '\n[[[FATE_NPC_ITEM]]]\n';
 
+function saveLocalizedData(localized) {
+    fs.writeFileSync(sourcePath, JSON.stringify(localized, null, 2) + '\n');
+}
+
 async function translateBatch(values, target) {
     const url = new URL('https://clients5.google.com/translate_a/t');
     url.searchParams.set('q', values.join(separator));
@@ -22,37 +26,46 @@ async function translateBatch(values, target) {
     return payload[0].split(separator);
 }
 
-async function translateTheme(theme, target) {
-    const translated = {};
-    for (const [key, values] of Object.entries(theme)) {
-        translated[key] = [];
-        for (let index = 0; index < values.length;) {
+async function translateMissingEntries(sourceTheme, localizedTheme, target) {
+    for (const [key, sourceValues] of Object.entries(sourceTheme)) {
+        const translatedValues = localizedTheme[key] || [];
+        if (translatedValues.length > sourceValues.length) {
+            throw new Error(`Too many existing ${target} entries for ${key}`);
+        }
+        if (translatedValues.length === sourceValues.length) continue;
+
+        console.log(`  ${key}: translating ${sourceValues.length - translatedValues.length} new entries`);
+        const missingValues = sourceValues.slice(translatedValues.length);
+        for (let index = 0; index < missingValues.length;) {
             const batch = [];
             // Keep requests below the browser translation endpoint's URL limit.
-            while (index < values.length &&
-                (batch.length === 0 || (batch.join(separator).length + separator.length + values[index].length) <= 3500)) {
-                batch.push(values[index++]);
+            while (index < missingValues.length &&
+                (batch.length === 0 || (batch.join(separator).length + separator.length + missingValues[index].length) <= 3500)) {
+                batch.push(missingValues[index++]);
             }
             const result = await translateBatch(batch, target);
             if (result.length !== batch.length) throw new Error(`Incomplete ${target} translation`);
-            translated[key].push(...result);
+            translatedValues.push(...result);
         }
+        localizedTheme[key] = translatedValues;
     }
-    return translated;
 }
 
 async function main() {
-    // Do not translate an already-localized file a second time.
-    if (source.en) throw new Error('NPC data is already localized.');
-    const localized = { en: source };
+    // Preserve existing translations and only append entries that have been added
+    // to the English source since the last localization pass.
+    const localized = source.en ? source : { en: source };
     for (const language of languages) {
-        console.log(`Translating NPC ideas into ${language}...`);
-        localized[language] = {};
-        for (const [themeName, theme] of Object.entries(source)) {
-            localized[language][themeName] = await translateTheme(theme, targetCodes[language]);
+        console.log(`Checking NPC ideas for ${language}...`);
+        localized[language] ||= {};
+        for (const [themeName, englishTheme] of Object.entries(localized.en)) {
+            localized[language][themeName] ||= {};
+            await translateMissingEntries(englishTheme, localized[language][themeName], targetCodes[language]);
+            // Persist completed themes so an interrupted bulk pass can resume
+            // without replacing already translated entries.
+            saveLocalizedData(localized);
         }
     }
-    fs.writeFileSync(sourcePath, JSON.stringify(localized, null, 2) + '\n');
 }
 
 main().catch(error => { console.error(error); process.exitCode = 1; });
