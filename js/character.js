@@ -22,9 +22,11 @@ function createNewCharacter() {
         skills: {},
         stunts: [],
         refresh: DEFAULT_REFRESH,
+        fatePoints: DEFAULT_REFRESH,
         stress: {
             physical: DEFAULT_STRESS_BOXES,
-            mental: DEFAULT_STRESS_BOXES
+            mental: DEFAULT_STRESS_BOXES,
+            marked: { physical: [], mental: [] }
         },
         consequences: {
             mild: { used: false, aspect: "" },
@@ -72,6 +74,13 @@ function loadCharacterData(characterData) {
     // Older saved characters predate language support; use the player's current
     // selection until they are saved again.
     if (!characterData.language) characterData.language = I18N.currentLang;
+    if (!Number.isSafeInteger(characterData.fatePoints) || characterData.fatePoints < 0) {
+        characterData.fatePoints = characterData.refresh ?? DEFAULT_REFRESH;
+    }
+    // Older saves only stored stress capacity, not which boxes were marked.
+    if (!characterData.stress.marked) {
+        characterData.stress.marked = { physical: [], mental: [] };
+    }
     currentCharacter = characterData;
     if (I18N.currentLang !== currentCharacter.language) {
         I18N.setLanguage(currentCharacter.language);

@@ -191,12 +191,24 @@ function setupEventListeners() {
     });
     
     // === CHARACTER SHEET ===
+    document.getElementById('fate-points-decrease').addEventListener('click', () => changeFatePoints(-1));
+    document.getElementById('fate-points-increase').addEventListener('click', () => changeFatePoints(1));
+
     document.getElementById('character-name').addEventListener('input', (e) => {
         updateCharacter('name', e.target.value);
     });
     
     document.getElementById('character-notes').addEventListener('input', (e) => {
         updateCharacter('notes', e.target.value);
+    });
+
+    ['mild', 'moderate', 'severe'].forEach(severity => {
+        document.getElementById(`consequence-${severity}`).addEventListener('input', (e) => {
+            updateCharacter(`consequences.${severity}`, {
+                used: e.target.value.trim().length > 0,
+                aspect: e.target.value
+            });
+        });
     });
     
     document.getElementById('btn-save-character').addEventListener('click', () => {
@@ -827,6 +839,25 @@ function displayCharacterSheet() {
 
     // Refresh
     document.getElementById('sheet-refresh-value').textContent = char.refresh;
+    displayFatePoints();
+}
+
+function displayFatePoints() {
+    const points = getCharacter().fatePoints;
+    document.getElementById('sheet-fate-points').textContent = points;
+    const decrease = document.getElementById('fate-points-decrease');
+    const increase = document.getElementById('fate-points-increase');
+    decrease.disabled = points === 0;
+    increase.disabled = points === Number.MAX_SAFE_INTEGER;
+}
+
+function changeFatePoints(amount) {
+    const char = getCharacter();
+    if (!char) return;
+    const points = char.fatePoints + amount;
+    if (!Number.isSafeInteger(points) || points < 0) return;
+    updateCharacter('fatePoints', points);
+    displayFatePoints();
 }
 
 function renderSheetSkills() {
@@ -876,6 +907,8 @@ function renderSheetSkills() {
 
 function displayStressBoxes(containerId, count) {
     const container = document.getElementById(containerId);
+    const track = containerId === 'physical-stress' ? 'physical' : 'mental';
+    const marked = getCharacter().stress.marked[track];
     container.innerHTML = '';
     
     for (let i = 1; i <= count; i++) {
@@ -885,6 +918,11 @@ function displayStressBoxes(containerId, count) {
             <input type="checkbox">
             <span>${i}</span>
         `;
+        const checkbox = label.querySelector('input');
+        checkbox.checked = marked[i - 1] === true;
+        checkbox.addEventListener('change', () => {
+            updateCharacter(`stress.marked.${track}.${i - 1}`, checkbox.checked);
+        });
         container.appendChild(label);
     }
 }

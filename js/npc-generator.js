@@ -99,12 +99,7 @@ async function generateNpc() {
         if (editModeActive) renderDraggableSkills();
         else renderSheetSkills();
         for (const track of ['physical', 'mental']) {
-            const container = document.getElementById(`${track}-stress`);
-            const checked = [...container.querySelectorAll('input')].map(input => input.checked);
             displayStressBoxes(`${track}-stress`, character.stress[track]);
-            container.querySelectorAll('input').forEach((input, index) => {
-                input.checked = checked[index] || false;
-            });
         }
         success = true;
     } catch (err) {

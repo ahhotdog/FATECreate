@@ -377,6 +377,22 @@
           />
         </div>
 
+        <!-- In-play resources -->
+        <div class="sheet-resources character-section">
+          <div class="sheet-resource">
+            <h3 id="fate-points-label" data-i18n="fatePointsTitle">Fate Points</h3>
+            <div class="fate-point-counter" role="group" aria-labelledby="fate-points-label">
+              <button type="button" id="fate-points-decrease" class="fate-point-button" data-i18n-aria="spendFatePoint" aria-label="Spend a Fate Point">−</button>
+              <output id="sheet-fate-points" aria-live="polite" aria-labelledby="fate-points-label">3</output>
+              <button type="button" id="fate-points-increase" class="fate-point-button" data-i18n-aria="gainFatePoint" aria-label="Gain a Fate Point">+</button>
+            </div>
+          </div>
+          <div class="sheet-resource">
+            <h3 data-i18n="refreshTitle">Refresh</h3>
+            <div class="refresh-value" id="sheet-refresh-value">3</div>
+          </div>
+        </div>
+
         <!-- Aspects Section -->
         <div class="character-section">
           <div class="aspects-grid" id="aspects-display">
@@ -470,14 +486,6 @@
             data-i18n-placeholder="notesPlaceholder"
             placeholder="Additional notes about your character..."
           ></textarea>
-        </div>
-
-        <!-- Refresh Display -->
-        <div class="character-section">
-          <div class="refresh-display">
-            <h3 data-i18n="refreshTitle">Refresh</h3>
-            <div class="refresh-value" id="sheet-refresh-value">3</div>
-          </div>
         </div>
 
         <div class="button-group">

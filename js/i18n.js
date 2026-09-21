@@ -78,6 +78,9 @@ const I18N = {
         btnRemoveStunt: { en: 'Remove', 'zh-TW': '移除', de: 'Entfernen', ja: '削除' },
 
         // === CHARACTER SHEET ===
+        fatePointsTitle: { en: 'Fate Points', 'zh-TW': '命運點數', de: 'Fate-Punkte', ja: 'フェイトポイント' },
+        spendFatePoint: { en: 'Spend a Fate Point', 'zh-TW': '使用一點命運點數', de: 'Einen Fate-Punkt ausgeben', ja: 'フェイトポイントを1点使う' },
+        gainFatePoint: { en: 'Gain a Fate Point', 'zh-TW': '獲得一點命運點數', de: 'Einen Fate-Punkt erhalten', ja: 'フェイトポイントを1点得る' },
         characterNamePlaceholder: { en: 'Character Name', 'zh-TW': '角色名稱', de: 'Charaktername', ja: 'キャラクター名' },
         coreAspects: { en: 'CORE ASPECTS', 'zh-TW': '核心形象', de: 'KERNASPEKTE', ja: 'コアアスペクト' },
         secondaryAspects: { en: 'SECONDARY ASPECTS', 'zh-TW': '次要形象', de: 'SEKUNDÄRE ASPEKTE', ja: 'セカンダリアスペクト' },

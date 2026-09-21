@@ -303,6 +303,78 @@
     margin-bottom: var(--spacing-md);
 }
 
+.sheet-resources {
+    display: grid;
+    grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+    border: 2px solid var(--btn-blue);
+    border-radius: var(--radius-lg);
+    background: white;
+    padding: var(--spacing-md) var(--spacing-sm);
+    gap: var(--spacing-sm);
+    text-align: center;
+}
+
+.sheet-resource + .sheet-resource {
+    border-left: 1px solid var(--border-color);
+    padding-left: var(--spacing-sm);
+}
+
+.sheet-resources h3 {
+    border: 0;
+    padding: 0;
+    margin-bottom: var(--spacing-xs);
+    font-size: 0.875rem;
+    text-transform: uppercase;
+    overflow-wrap: anywhere;
+}
+
+.fate-point-counter {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-sm);
+}
+
+#sheet-fate-points, .sheet-resources .refresh-value {
+    font-size: 2rem;
+    font-weight: bold;
+    color: var(--btn-blue);
+    font-variant-numeric: tabular-nums;
+    line-height: 48px;
+}
+
+#sheet-fate-points {
+    min-width: 2ch;
+    overflow-wrap: anywhere;
+    min-height: 48px;
+}
+
+.fate-point-button {
+    flex: 0 0 44px;
+    height: 44px;
+    border: 1px solid var(--btn-blue);
+    border-radius: var(--radius-md);
+    background: var(--card-bg);
+    color: var(--text-dark);
+    font-size: 1.5rem;
+    cursor: pointer;
+}
+
+.fate-point-button:hover:not(:disabled) {
+    background: var(--btn-blue);
+    color: white;
+}
+
+.fate-point-button:focus-visible {
+    outline: 2px solid var(--btn-shadow);
+    outline-offset: 2px;
+}
+
+.fate-point-button:disabled {
+    opacity: 0.4;
+    cursor: default;
+}
+
 .aspects-grid {
     display: flex;
     flex-direction: column;
