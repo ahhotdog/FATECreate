@@ -1,0 +1,20 @@
+section,key,value,detail
+format,Fate Create,1,
+character,name,"CSV Test, 雪",
+character,language,en,
+character,notes,"A note with ""quotes""
+and a second line.",
+character,refresh,3,
+character,fatePoints,5,
+aspect,highConcept,Curious wizard,
+aspect,trouble,Always asking questions,
+aspect,phaseOne,,
+aspect,phaseTwo,,
+aspect,phaseThree,,
+skill,Will,3,
+stunt,0,Quick thinker,A useful trick.
+stress,physical,2,"[true,false]"
+stress,mental,3,"[false,true,false]"
+consequence,mild,Bruised,true
+consequence,moderate,,false
+consequence,severe,,false

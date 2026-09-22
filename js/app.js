@@ -1,6 +1,11 @@
 // app.js
 // Main application controller - ties everything together
 
+// Character text can come from a shared file as well as local inputs.
+function escapeCharacterText(value) {
+    return String(value ?? '').replace(/[&<>"']/g, char => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[char]));
+}
+
 // Initialize the app when DOM is loaded
 document.addEventListener('DOMContentLoaded', function() {
     console.log('Fate Create initialized');
@@ -47,6 +52,21 @@ function setupScrollMenuButton() {
 
 // Set up all event listeners
 function setupEventListeners() {
+    ['btn-import', 'menu-import'].forEach(id => {
+        document.getElementById(id).addEventListener('click', () => {
+            hideModal('menu-overlay');
+            document.getElementById('character-csv-file').click();
+        });
+    });
+    document.getElementById('character-csv-file').addEventListener('change', event => importCharacterCsvFile(event));
+    document.getElementById('btn-export-character').addEventListener('click', () => {
+        if (editModeActive) saveEditModeChanges();
+        downloadCharacterCsv();
+    });
+    document.getElementById('btn-print-character').addEventListener('click', () => {
+        if (editModeActive) saveEditModeChanges();
+        openCharacterPrintPreview(getCharacter());
+    });
     // === HOME PAGE ===
     document.getElementById('btn-new').addEventListener('click', () => {
         startNewCharacter();
@@ -788,7 +808,7 @@ function displayCharacterSheet() {
         const value = char.aspects[key];
         const aspectDiv = document.createElement('div');
         aspectDiv.className = 'aspect-display';
-        aspectDiv.innerHTML = `<div class="aspect-value">${value || '—'}</div>`;
+        aspectDiv.innerHTML = `<div class="aspect-value">${escapeCharacterText(value || '—')}</div>`;
         aspectsDisplay.appendChild(aspectDiv);
     });
     
@@ -803,7 +823,7 @@ function displayCharacterSheet() {
         const value = char.aspects[key];
         const aspectDiv = document.createElement('div');
         aspectDiv.className = 'aspect-display';
-        aspectDiv.innerHTML = `<div class="aspect-value">${value || '—'}</div>`;
+        aspectDiv.innerHTML = `<div class="aspect-value">${escapeCharacterText(value || '—')}</div>`;
         aspectsDisplay.appendChild(aspectDiv);
     });
     
@@ -819,8 +839,8 @@ function displayCharacterSheet() {
         const stuntDiv = document.createElement('div');
         stuntDiv.className = 'stunt-display';
         stuntDiv.innerHTML = `
-            <div class="stunt-display-name">${stunt ? stunt.name : '—'}</div>
-            <div class="stunt-display-description">${stunt ? stunt.description : ''}</div>
+            <div class="stunt-display-name">${escapeCharacterText(stunt ? stunt.name : '—')}</div>
+            <div class="stunt-display-description">${escapeCharacterText(stunt ? stunt.description : '')}</div>
         `;
         stuntsDisplay.appendChild(stuntDiv);
     });
@@ -892,7 +912,7 @@ function renderSheetSkills() {
             const skillDiv = document.createElement('div');
             skillDiv.className = skill ? 'skill-item clickable' : 'skill-item';
             skillDiv.innerHTML = `
-                <span class="skill-name">${skill ? I18N.skill(skill) : '—'}</span>
+                <span class="skill-name">${escapeCharacterText(skill ? I18N.skill(skill) : '—')}</span>
                 <span class="skill-rating">+${rating}</span>
             `;
             if (skill) {
@@ -965,8 +985,8 @@ function displayLoadPage() {
             <div class="character-preview">
                 ${portraitHtml}
                 <div class="card-info">
-                    <h3 class="character-name">${char.name || 'Unnamed Character'}</h3>
-                    <p class="character-concept">${char.aspects.highConcept || ''}</p>
+                    <h3 class="character-name">${escapeCharacterText(char.name || 'Unnamed Character')}</h3>
+                    <p class="character-concept">${escapeCharacterText(char.aspects.highConcept || '')}</p>
                     <p class="character-date">${I18N.t('lastModified')} ${dateStr}</p>
                 </div>
             </div>

@@ -6,8 +6,8 @@
     background-color: var(--btn-blue);
     color: white;
     border: none;
-    padding: 15px 40px;
-    font-size: 1.5rem;
+    padding: 12px 22px;
+    font-size: 1rem;
     font-weight: bold;
     border-radius: var(--radius-lg);
     cursor: pointer;
@@ -16,9 +16,14 @@
     text-transform: uppercase;
     letter-spacing: 1px;
     font-family: inherit;
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     text-align: center;
-    min-width: 200px;
+    min-width: 160px;
+    min-height: 48px;
+    line-height: 1.3;
+    overflow-wrap: anywhere;
 }
 
 .ui-button:hover:not(:disabled) {
@@ -115,6 +120,11 @@
     flex-wrap: wrap;
     justify-content: center;
     margin-top: var(--spacing-lg);
+}
+
+.button-group > .ui-button {
+    flex: 1 1 160px;
+    max-width: 320px;
 }
 
 /* ===== CARDS ===== */

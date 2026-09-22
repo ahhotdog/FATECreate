@@ -15,6 +15,10 @@ When you reach the character sheet, click **Save Character** to store it in your
 
 ---
 
+### Print or Save as PDF
+
+Load a character (including one imported from CSV), then select **Print Character** at the bottom of its sheet. The preview includes the character's fields, stress marks, consequences, and notes on one page. Select **Print / Save as PDF**, choose A4 or Letter in portrait orientation, use 100% scale, and turn off browser headers and footers. Text is automatically reduced for longer characters; unusually large amounts of text may become very small. No notes or stunts are truncated. Portraits appear when available on the loaded character; CSV imports do not contain portraits.
+
 ## 📝 Character Creation Walkthrough
 
 ### The Wizard Steps
@@ -194,7 +198,7 @@ The app is fully responsive and works great on mobile devices:
 A: Yes! Load the character and make changes, then save again.
 
 **Q: Can I export my character?**
-A: Currently characters are saved in your browser. Export features coming in future updates!
+A: Click **Export CSV** at the bottom of the character sheet to download the current character, including unsaved sheet edits. On the home page or in the menu, use **Import CSV** to choose a Fate Create CSV file (up to 2 MB). Each import saves a new copy, available under **Load**, without replacing existing characters or the sheet you are editing. CSV includes aspects, skills, stunts, notes, language, refresh, Fate points, stress marks, and consequences. Portrait images are not included. Keep the CSV headers and format rows intact if editing the file in a spreadsheet.
 
 **Q: Can I use this offline?**
 A: Yes! Once loaded, the app works completely offline.

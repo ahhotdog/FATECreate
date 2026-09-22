@@ -6,6 +6,15 @@ const I18N = {
 
     // All translatable strings organized by key
     strings: {
+        btnPrintCharacter: { en: 'Print Character', 'zh-TW': '列印角色卡', de: 'Charakter drucken', ja: 'キャラクター印刷' },
+        printAction: { en: 'Print / Save as PDF', 'zh-TW': '列印／另存 PDF', de: 'Drucken / Als PDF speichern', ja: '印刷／PDF として保存' },
+        printHint: { en: 'One page · A4 or Letter · Portrait · Disable browser headers and footers', 'zh-TW': '單頁 · A4 或 Letter · 直向 · 請關閉瀏覽器頁首及頁尾', de: 'Eine Seite · A4 oder Letter · Hochformat · Browser-Kopf- und Fußzeilen ausschalten', ja: '1ページ · A4 または Letter · 縦向き · ブラウザーのヘッダーとフッターをオフにしてください' },
+        printSmall: { en: 'All information is included. This character has a lot of text, so it has been reduced to fit one page.', 'zh-TW': '已包含所有資訊。此角色文字較多，已縮小以符合單頁。', de: 'Alle Angaben sind enthalten. Der umfangreiche Text wurde verkleinert, damit alles auf eine Seite passt.', ja: 'すべての情報を含みます。文字量が多いため、1ページに収まるよう縮小しています。' },
+        printClose: { en: 'Back to Character', 'zh-TW': '返回角色卡', de: 'Zurück zum Charakter', ja: 'キャラクターに戻る' },
+        btnImportCsv: { en: 'Import CSV', 'zh-TW': '匯入 CSV', de: 'CSV importieren', ja: 'CSV インポート' },
+        btnExportCsv: { en: 'Export CSV', 'zh-TW': '匯出 CSV', de: 'CSV exportieren', ja: 'CSV エクスポート' },
+        csvImported: { en: 'Character imported! Open it from Load.', 'zh-TW': '角色已匯入！請從「讀取」開啟。', de: 'Charakter importiert! Unter „Laden“ öffnen.', ja: 'インポートしました。「読込」から開いてください。' },
+        csvInvalid: { en: 'Could not import this file. Choose a Fate Create CSV export (up to 2 MB).', 'zh-TW': '無法匯入此檔案。請選擇 Fate Create 匯出的 CSV（最大 2 MB）。', de: 'Import fehlgeschlagen. Bitte einen Fate-Create-CSV-Export wählen (max. 2 MB).', ja: '読み込めませんでした。Fate Create から書き出した CSV（最大 2 MB）を選んでください。' },
         // === APP TITLE ===
         appTitle: { en: 'Fate Create', 'zh-TW': 'Fate Create', de: 'Fate Create', ja: 'Fate Create' },
         appSubtitle: { en: 'FATE Core Character Creator', 'zh-TW': 'FATE Core 角色創建器', de: 'FATE Core Charaktergenerator', ja: 'FATE Core キャラクター作成ツール' },

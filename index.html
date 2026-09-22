@@ -44,6 +44,7 @@
         <h2>A FATE CORE KITTY WIZARD</h2>
         <div class="button-group">
           <button id="btn-new" class="ui-button" data-i18n="btnNew">NEW</button>
+          <button id="btn-import" class="ui-button ui-button-secondary" data-i18n="btnImportCsv">Import CSV</button>
           <button
             id="btn-load"
             class="ui-button ui-button-secondary"
@@ -504,9 +505,11 @@
             Save Character
           </button>
           <button id="btn-npc-generator" class="ui-button ui-button-npc" data-i18n="npcTitle">NPC Generator</button>
+          <button id="btn-export-character" class="ui-button" data-i18n="btnExportCsv">Export CSV</button>
+          <button id="btn-print-character" class="ui-button" data-i18n="btnPrintCharacter">Print Character</button>
           <button
             id="btn-new-from-sheet"
-            class="ui-button ui-button-secondary ui-button-small"
+            class="ui-button ui-button-secondary"
             data-i18n="btnNewFromSheet"
           >
             New Character
@@ -660,6 +663,7 @@
           <button class="menu-item" id="menu-info" data-i18n="menuInfo">
             INFO
           </button>
+          <button class="menu-item" id="menu-import" data-i18n="btnImportCsv">Import CSV</button>
           <button class="menu-item" id="menu-setting" data-i18n="menuSetting">
             SETTING
           </button>
@@ -711,6 +715,9 @@
     <script src="js/fate-data.js"></script>
     <script src="js/character.js"></script>
     <script src="js/storage.js"></script>
+    <input id="character-csv-file" type="file" accept=".csv,text/csv" hidden />
+    <script src="js/character-csv.js"></script>
+    <script src="js/character-print.js"></script>
     <script src="js/navigation.js"></script>
     <script src="js/validation.js"></script>
     <script src="js/app.js"></script>
